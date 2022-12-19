@@ -1,0 +1,43 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    _instanceof:
+        # Messenger handlers
+        App\Common\Application\Query\QueryHandler:
+            tags:
+                - { name: 'messenger.message_handler', bus: 'query.bus' }
+
+        App\Common\Application\Command\CommandHandler:
+            tags:
+                - { name: 'messenger.message_handler', bus: 'command.bus' }
+
+    ######
+    # SHARED
+    ################################
+
+    App\Common\:
+        resource: '%kernel.project_dir%/src/Common/'
+        exclude:
+            - '%kernel.project_dir%/src/Common/Infrastructure/Kernel.php'
+
+    ######
+    # Backoffice
+    ################################
+
+    App\Backoffice\Authentication\:
+        resource: '%kernel.project_dir%/src/Backoffice/Authentication/'
+
+    App\Backoffice\Users\:
+        resource: '%kernel.project_dir%/src/Backoffice/Users/'
+
+    App\Backoffice\Workspace\:
+        resource: '%kernel.project_dir%/src/Backoffice/Workspace/'
+
+    ######
+    # Messaging
+    ################################
+
+    App\Messaging\:
+        resource: '%kernel.project_dir%/src/Messaging/'

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doctrine-mapping xmlns="https://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="https://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="https://doctrine-project.org/schemas/orm/doctrine-mapping
+                          https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+    <entity name="App\Messaging\Domain\Entity\Message" table="messages">
+        <id name="id" type="message_id" column="id"/>
+
+        <field name="content" type="message_content" column="content"/>
+        <field name="sentAt" type="datetime" column="sent_at"/>
+
+        <indexes>
+            <index name="messages_sent_at_idx" columns="sent_at"/>
+        </indexes>
+
+        <many-to-one field="conversation" target-entity="App\Messaging\Domain\Entity\Conversation" inversed-by="messages">
+            <join-column nullable="false" name="conversation_id" referenced-column-name="id"/>
+        </many-to-one>
+
+        <many-to-one field="sentBy" target-entity="App\Messaging\Domain\Entity\Participant">
+            <join-column nullable="false" name="sent_by" referenced-column-name="id"/>
+        </many-to-one>
+    </entity>
+</doctrine-mapping>

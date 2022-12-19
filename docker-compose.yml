@@ -1,0 +1,72 @@
+version: "3.8"
+
+services:
+  api_php:
+    build:
+      context: .
+      target: api_php
+    depends_on:
+      - database
+    restart: unless-stopped
+    volumes:
+      - php_socket:/var/run/php
+    healthcheck:
+      interval: 10s
+      timeout: 3s
+      retries: 3
+      start_period: 30s
+    environment:
+      DATABASE_NAME: ${DATABASE_NAME}
+      DATABASE_HOST: ${DATABASE_HOST}
+      DATABASE_PORT: ${DATABASE_PORT}
+      DATABASE_USER: ${DATABASE_USER}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD}
+      DATABASE_DRIVER: ${DATABASE_DRIVER}
+      DATABASE_SERVER_VERSION: ${DATABASE_SERVER_VERSION}
+      DATABASE_CHARSET: ${DATABASE_CHARSET}
+
+      TRUSTED_PROXIES: ${TRUSTED_PROXIES}
+      TRUSTED_HOSTS: ^${SERVER_NAME}$$
+
+      MERCURE_URL: ${CADDY_MERCURE_URL:-http://caddy/.well-known/mercure}
+      MERCURE_PUBLIC_URL: https://${SERVER_NAME:-localhost}/.well-known/mercure
+      MERCURE_JWT_SECRET: ${CADDY_MERCURE_JWT_SECRET:-!ChangeThisMercureHubJWTSecretKey!}
+    networks:
+      - db-network
+
+  api_caddy:
+    build:
+      context: .
+      target: api_caddy
+    depends_on:
+      - api_php
+    environment:
+      SERVER_NAME: ${SERVER_NAME}
+
+      MERCURE_PUBLISHER_JWT_KEY: ${CADDY_MERCURE_JWT_SECRET:-!ChangeMe!}
+      MERCURE_SUBSCRIBER_JWT_KEY: ${CADDY_MERCURE_JWT_SECRET:-!ChangeMe!}
+    restart: unless-stopped
+    volumes:
+      - php_socket:/var/run/php
+      - caddy_data:/data
+      - caddy_config:/config
+
+  database:
+    image: postgres:${DATABASE_SERVER_VERSION:-14}-alpine
+    environment:
+      POSTGRES_DB: ${DATABASE_NAME}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+      POSTGRES_USER: ${DATABASE_USER}
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    networks:
+      - db-network
+
+volumes:
+  php_socket:
+  caddy_data:
+  caddy_config:
+  db_data:
+
+networks:
+  db-network:

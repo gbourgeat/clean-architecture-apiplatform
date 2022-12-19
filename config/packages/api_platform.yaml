@@ -1,0 +1,17 @@
+api_platform:
+    enable_swagger_ui: true
+    enable_re_doc: false
+    mapping:
+        paths:
+            - '%kernel.project_dir%/src/Backoffice/Authentication/UserInterface/ApiPlatform/Resource/'
+            - '%kernel.project_dir%/src/Messaging/UserInterface/ApiPlatform/Resource/'
+    patch_formats:
+        json:
+            - 'application/merge-patch+json'
+    swagger:
+        versions: [3]
+    exception_to_status:
+        InvalidArgumentException: 422
+    formats:
+        json: ['application/json']
+        html: ['text/html']

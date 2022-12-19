@@ -1,0 +1,31 @@
+http:
+  services:
+    api-service:
+      loadBalancer:
+        servers:
+          - url: "http://api_caddy"
+
+  routers:
+    traefik-dashboard:
+      tls: { }
+      entryPoints:
+        - https
+      rule: Host(`traefik.lab-ddd.localhost`)
+      service: api@internal
+
+    api:
+      tls: { }
+      entryPoints:
+        - https
+      rule: Host(`api.lab-ddd.localhost`)
+      service: api-service
+
+tls:
+  stores:
+    default:
+      defaultCertificate:
+        certFile: /etc/certs/localhost.crt
+        keyFile: /etc/certs/localhost.key
+  certificates:
+    - certFile: /etc/certs/localhost.crt
+      keyFile: /etc/certs/localhost.key

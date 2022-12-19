@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doctrine-mapping xmlns="https://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="https://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="https://doctrine-project.org/schemas/orm/doctrine-mapping
+                          https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+    <entity name="App\Messaging\Domain\Entity\Conversation" table="conversations">
+        <id name="id" type="conversation_id" column="id"/>
+
+        <field name="createdAt" type="datetime" column="created_at"/>
+
+        <indexes>
+            <index name="conversations_created_at_idx" columns="created_at"/>
+        </indexes>
+
+        <one-to-many field="messages" target-entity="App\Messaging\Domain\Entity\Message" mapped-by="conversation">
+            <cascade>
+                <cascade-all/>
+            </cascade>
+        </one-to-many>
+
+        <one-to-many field="participants" target-entity="App\Messaging\Domain\Entity\Participant" mapped-by="conversation">
+            <cascade>
+                <cascade-all/>
+            </cascade>
+        </one-to-many>
+    </entity>
+</doctrine-mapping>

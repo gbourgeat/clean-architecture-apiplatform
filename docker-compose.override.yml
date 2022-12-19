@@ -1,0 +1,50 @@
+version: "3.8"
+
+# Development environment override
+services:
+  api_php:
+    build:
+      target: api_php_dev
+    volumes:
+      - ./:/srv/app:rw,cached
+      - ./docker/php/conf.d/app.dev.ini:/usr/local/etc/php/conf.d/app.dev.ini:ro
+    environment:
+      XDEBUG_MODE: "${XDEBUG_MODE:-off}"
+    extra_hosts:
+      - host.docker.internal:host-gateway
+
+  api_caddy:
+    volumes:
+      - ./public:/srv/app/public:ro
+      - ./docker/caddy/Caddyfile:/etc/caddy/Caddyfile:ro
+    networks:
+      - traefik-network
+
+  database:
+    ports:
+      - target: 5432
+        published: 5555
+        protocol: tcp
+
+  #####################
+  #  Traefik
+  ##################################
+
+  traefik:
+    image: traefik:v2.9
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      TZ: "Europe/Paris"
+    networks:
+      traefik-network:
+        aliases:
+          - lab-ddd.localhost
+    volumes:
+      - ./docker/traefik/traefik.yml:/etc/traefik/traefik.yml
+      - ./docker/traefik/traefik.config.yml:/etc/traefik/traefik.config.yml
+      - ./docker/certs/:/etc/certs
+
+networks:
+  traefik-network:

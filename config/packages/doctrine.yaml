@@ -1,0 +1,55 @@
+doctrine:
+    dbal:
+        dbname: '%env(resolve:DATABASE_NAME)%'
+        host: '%env(resolve:DATABASE_HOST)%'
+        port: '%env(resolve:DATABASE_PORT)%'
+        user: '%env(resolve:DATABASE_USER)%'
+        password: '%env(resolve:DATABASE_PASSWORD)%'
+        driver: '%env(resolve:DATABASE_DRIVER)%'
+        server_version: '%env(resolve:DATABASE_SERVER_VERSION)%'
+        
+        types:
+            # Common
+            datetime: App\Common\Infrastructure\Doctrine\Type\DateTimeType
+            firstname: App\Common\Infrastructure\Doctrine\Type\FirstNameType
+            lastname: App\Common\Infrastructure\Doctrine\Type\LastNameType
+            email: App\Common\Infrastructure\Doctrine\Type\EmailType
+            
+            # Backoffice/Users
+            user_id: App\Backoffice\Users\Infrastructure\Doctrine\Type\UserIdType
+            user_status: App\Backoffice\Users\Infrastructure\Doctrine\Type\UserStatusType
+            external_id: App\Backoffice\Users\Infrastructure\Doctrine\Type\ExternalIdType
+            hashed_password: App\Backoffice\Users\Infrastructure\Doctrine\Type\HashedPasswordType
+            
+            # Backoffice/Workspace
+            workspace_id: App\Backoffice\Workspace\Infrastructure\Doctrine\Type\WorkspaceIdType
+            workspace_name: App\Backoffice\Workspace\Infrastructure\Doctrine\Type\WorkspaceNameType
+            
+            # Messaging
+            conversation_id: App\Messaging\Infrastructure\Doctrine\Type\ConversationIdType
+            participant_id: App\Messaging\Infrastructure\Doctrine\Type\ParticipantIdType
+            message_id: App\Messaging\Infrastructure\Doctrine\Type\MessageIdType
+            message_content: App\Messaging\Infrastructure\Doctrine\Type\MessageContentType
+            
+    orm:
+        auto_generate_proxy_classes: true
+        naming_strategy: doctrine.orm.naming_strategy.underscore_number_aware
+        auto_mapping: true
+        mappings:
+            Backoffice\Users:
+                is_bundle: false
+                type: xml
+                dir: '%kernel.project_dir%/src/Backoffice/Users/Infrastructure/Doctrine/Mapping'
+                prefix: 'App\Backoffice\Users\Domain\Entity'
+                
+            Backoffice\Workspace:
+                is_bundle: false
+                type: xml
+                dir: '%kernel.project_dir%/src/Backoffice/Workspace/Infrastructure/Doctrine/Mapping'
+                prefix: 'App\Backoffice\Workspace\Domain\Entity'
+
+            Messaging:
+                is_bundle: false
+                type: xml
+                dir: '%kernel.project_dir%/src/Messaging/Infrastructure/Doctrine/Mapping'
+                prefix: 'App\Messaging\Domain\Entity'
