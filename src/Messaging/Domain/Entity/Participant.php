@@ -4,37 +4,37 @@ declare(strict_types=1);
 
 namespace App\Messaging\Domain\Entity;
 
-use App\Backoffice\Users\Domain\Entity\User;
-use App\Backoffice\Users\Domain\ValueObject\UserId;
-use App\Common\Domain\ValueObject\Email;
-use App\Common\Domain\ValueObject\FirstName;
-use App\Common\Domain\ValueObject\LastName;
+use App\Backoffice\User\Application\DTO\UserDTO;
+use App\Backoffice\User\Domain\ValueObject\UserId;
 use App\Messaging\Domain\Exception\ConversationAlreadyArchivedByParticipant;
 use App\Messaging\Domain\ValueObject\ParticipantId;
+use App\Messaging\Domain\ValueObject\ParticipantName;
 
 class Participant
 {
     private ParticipantId $id;
-    private User $user;
 
-    private Conversation $conversation;
+    private ParticipantName $name;
+
+    private UserId $userId;
+
     private bool $isArchived;
 
     private function __construct(
-        User $user,
-        Conversation $conversation,
+        readonly UserDTO $user,
+        private readonly Conversation $conversation,
     ) {
         $this->id = ParticipantId::generate();
-        $this->user = $user;
-        $this->conversation = $conversation;
+        $this->userId = UserId::fromString($this->user->id);
+        $this->name = ParticipantName::fromUserDTO($this->user);
         $this->isArchived = false;
     }
 
     public static function create(
-        User $user,
+        UserDTO $userDTO,
         Conversation $conversation,
     ): self {
-        return new self($user, $conversation);
+        return new self($userDTO, $conversation);
     }
 
     /*
@@ -66,22 +66,12 @@ class Participant
 
     public function userId(): UserId
     {
-        return $this->user->id();
+        return $this->userId;
     }
 
-    public function firstName(): FirstName
+    public function name(): ParticipantName
     {
-        return $this->user->firstName();
-    }
-
-    public function lastName(): LastName
-    {
-        return $this->user->lastName();
-    }
-
-    public function email(): Email
-    {
-        return $this->user->email();
+        return $this->name;
     }
 
     public function conversation(): Conversation

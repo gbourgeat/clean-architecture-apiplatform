@@ -10,7 +10,7 @@
             <join-column nullable="false" name="conversation_id" referenced-column-name="id"/>
         </many-to-one>
 
-        <many-to-one field="user" target-entity="App\Backoffice\Users\Domain\Entity\User">
+        <many-to-one field="user" target-entity="App\Backoffice\User\Domain\Entity\User">
             <join-column nullable="false" name="user_id" referenced-column-name="id"/>
         </many-to-one>
     </entity>

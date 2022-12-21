@@ -4,7 +4,11 @@ services:
         autoconfigure: true
 
     _instanceof:
+
+        ######
         # Messenger handlers
+        ################################
+
         App\Common\Application\Query\QueryHandler:
             tags:
                 - { name: 'messenger.message_handler', bus: 'query.bus' }
@@ -14,23 +18,27 @@ services:
                 - { name: 'messenger.message_handler', bus: 'command.bus' }
 
     ######
-    # SHARED
+    # Common
     ################################
 
     App\Common\:
         resource: '%kernel.project_dir%/src/Common/'
         exclude:
-            - '%kernel.project_dir%/src/Common/Infrastructure/Kernel.php'
+            - '%kernel.project_dir%/src/Common/Infrastructure/Symfony/Kernel.php'
+
+    ######
+    # Authentication
+    ################################
+
+    App\Authentication\:
+        resource: '%kernel.project_dir%/src/Authentication/'
 
     ######
     # Backoffice
     ################################
 
-    App\Backoffice\Authentication\:
-        resource: '%kernel.project_dir%/src/Backoffice/Authentication/'
-
-    App\Backoffice\Users\:
-        resource: '%kernel.project_dir%/src/Backoffice/Users/'
+    App\Backoffice\User\:
+        resource: '%kernel.project_dir%/src/Backoffice/User/'
 
     App\Backoffice\Workspace\:
         resource: '%kernel.project_dir%/src/Backoffice/Workspace/'

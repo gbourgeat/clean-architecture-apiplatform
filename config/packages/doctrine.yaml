@@ -7,41 +7,49 @@ doctrine:
         password: '%env(resolve:DATABASE_PASSWORD)%'
         driver: '%env(resolve:DATABASE_DRIVER)%'
         server_version: '%env(resolve:DATABASE_SERVER_VERSION)%'
-        
+
         types:
             # Common
             datetime: App\Common\Infrastructure\Doctrine\Type\DateTimeType
             firstname: App\Common\Infrastructure\Doctrine\Type\FirstNameType
             lastname: App\Common\Infrastructure\Doctrine\Type\LastNameType
             email: App\Common\Infrastructure\Doctrine\Type\EmailType
-            
-            # Backoffice/Users
-            user_id: App\Backoffice\Users\Infrastructure\Doctrine\Type\UserIdType
-            user_status: App\Backoffice\Users\Infrastructure\Doctrine\Type\UserStatusType
-            external_id: App\Backoffice\Users\Infrastructure\Doctrine\Type\ExternalIdType
-            hashed_password: App\Backoffice\Users\Infrastructure\Doctrine\Type\HashedPasswordType
-            
+
+            # Authentication
+            username: App\Authentication\Infrastructure\Doctrine\Type\UsernameType
+            hashed_password: App\Authentication\Infrastructure\Doctrine\Type\HashedPasswordType
+
+            # Backoffice/User
+            user_id: App\Backoffice\User\Infrastructure\Doctrine\Type\UserIdType
+            user_status: App\Backoffice\User\Infrastructure\Doctrine\Type\UserStatusType
+
             # Backoffice/Workspace
             workspace_id: App\Backoffice\Workspace\Infrastructure\Doctrine\Type\WorkspaceIdType
             workspace_name: App\Backoffice\Workspace\Infrastructure\Doctrine\Type\WorkspaceNameType
-            
+
             # Messaging
             conversation_id: App\Messaging\Infrastructure\Doctrine\Type\ConversationIdType
             participant_id: App\Messaging\Infrastructure\Doctrine\Type\ParticipantIdType
             message_id: App\Messaging\Infrastructure\Doctrine\Type\MessageIdType
             message_content: App\Messaging\Infrastructure\Doctrine\Type\MessageContentType
-            
+
     orm:
         auto_generate_proxy_classes: true
         naming_strategy: doctrine.orm.naming_strategy.underscore_number_aware
         auto_mapping: true
         mappings:
-            Backoffice\Users:
+            Authentication:
                 is_bundle: false
                 type: xml
-                dir: '%kernel.project_dir%/src/Backoffice/Users/Infrastructure/Doctrine/Mapping'
-                prefix: 'App\Backoffice\Users\Domain\Entity'
-                
+                dir: '%kernel.project_dir%/src/Authentication/Infrastructure/Doctrine/Mapping'
+                prefix: 'App\Authentication\Domain\Entity'
+
+            Backoffice\User:
+                is_bundle: false
+                type: xml
+                dir: '%kernel.project_dir%/src/Backoffice/User/Infrastructure/Doctrine/Mapping'
+                prefix: 'App\Backoffice\User\Domain\Entity'
+
             Backoffice\Workspace:
                 is_bundle: false
                 type: xml

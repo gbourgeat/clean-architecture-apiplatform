@@ -13,7 +13,7 @@
             <index name="workspaces_created_at_idx" columns="created_at"/>
         </indexes>
 
-        <many-to-one field="owner" target-entity="App\Backoffice\Users\Domain\Entity\User" inversed-by="workspaces">
+        <many-to-one field="owner" target-entity="App\Backoffice\User\Domain\Entity\User" inversed-by="workspaces">
             <join-column nullable="false" name="owner_id" referenced-column-name="id"/>
         </many-to-one>
     </entity>

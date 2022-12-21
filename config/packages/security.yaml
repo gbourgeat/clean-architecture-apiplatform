@@ -1,20 +1,7 @@
 security:
-    enable_authenticator_manager: true
-
-    providers:
-        users:
-            entity:
-                class: 'App\Backoffice\Authentication\Domain\Entity\User'
-                property: 'email'
-
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         main:
             lazy: true
-            custom_authenticators:
-                - App\Backoffice\Authentication\Infrastructure\Symfony\Security\KongAuthenticator
-#
-#    access_control:
-#        - { path: ^/, roles: ROLE_USER }

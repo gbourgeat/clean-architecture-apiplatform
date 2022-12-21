@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace App\Messaging\Domain\Entity;
 
-use App\Backoffice\Users\Domain\Entity\User;
+use App\Backoffice\User\Application\DTO\UserDTO;
+use App\Backoffice\User\Domain\Entity\User;
 use App\Common\Domain\Entity\AggregateRoot;
 use App\Messaging\Domain\Exception\NotEnoughParticipants;
 use App\Messaging\Domain\Exception\ParticipantNotFoundInConversation;
@@ -43,7 +44,7 @@ class Conversation extends AggregateRoot
     private Collection $participants;
 
     /**
-     * @param array<User> $users
+     * @param UserDTO[] $users
      */
     private function __construct(Carbon $createdAt, array $users)
     {
@@ -60,7 +61,7 @@ class Conversation extends AggregateRoot
     }
 
     /**
-     * @param array<User> $users
+     * @param UserDTO[] $users
      */
     public static function create(Carbon $createdAt, array $users): self
     {

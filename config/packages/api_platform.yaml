@@ -3,13 +3,20 @@ api_platform:
     enable_re_doc: false
     mapping:
         paths:
-            - '%kernel.project_dir%/src/Backoffice/Authentication/UserInterface/ApiPlatform/Resource/'
+            - '%kernel.project_dir%/src/Authentication/UserInterface/ApiPlatform/Resource/'
+            - '%kernel.project_dir%/src/Authentication/UserInterface/ApiPlatform/Payload/'
+            - '%kernel.project_dir%/src/Backoffice/User/UserInterface/ApiPlatform/Resource/'
+#            - '%kernel.project_dir%/src/Backoffice/Workspace/UserInterface/ApiPlatform/Resource/'
             - '%kernel.project_dir%/src/Messaging/UserInterface/ApiPlatform/Resource/'
     patch_formats:
         json:
             - 'application/merge-patch+json'
     swagger:
         versions: [3]
+        api_keys:
+            JWT:
+                name: Authorization
+                type: header
     exception_to_status:
         InvalidArgumentException: 422
     formats:

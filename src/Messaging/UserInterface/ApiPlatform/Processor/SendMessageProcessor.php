@@ -6,7 +6,7 @@ namespace App\Messaging\UserInterface\ApiPlatform\Processor;
 
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProcessorInterface;
-use App\Backoffice\Users\Domain\ValueObject\UserId;
+use App\Backoffice\User\Domain\ValueObject\UserId;
 use App\Common\Application\Command\CommandBus;
 use App\Messaging\Application\UseCase\SendMessage\SendMessageCommand;
 use App\Messaging\Domain\ValueObject\ConversationId;

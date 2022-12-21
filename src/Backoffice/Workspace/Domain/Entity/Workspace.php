@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Backoffice\Workspace\Domain\Entity;
 
-use App\Backoffice\Users\Domain\Entity\User;
+use App\Backoffice\User\Domain\Entity\User;
 use App\Backoffice\Workspace\Domain\ValueObject\WorkspaceId;
 use App\Backoffice\Workspace\Domain\ValueObject\WorkspaceName;
 use App\Common\Domain\Entity\AggregateRoot;

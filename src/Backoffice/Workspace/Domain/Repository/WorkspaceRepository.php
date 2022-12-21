@@ -9,5 +9,5 @@ use App\Common\Domain\Repository\Repository;
 
 interface WorkspaceRepository extends Repository
 {
-    public function save(Workspace $workspace): void;
+    public function add(Workspace $workspace): void;
 }

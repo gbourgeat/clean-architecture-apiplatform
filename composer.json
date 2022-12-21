@@ -11,18 +11,20 @@
     ],
     "require": {
         "php": ">=8.1",
-
         "ext-ctype": "*",
         "ext-iconv": "*",
         "ext-zend-opcache": "*",
-
         "api-platform/core": "^3.0",
-
         "doctrine/annotations": "^1.13",
         "doctrine/doctrine-bundle": "^2.7",
         "doctrine/doctrine-migrations-bundle": "^3.2",
         "doctrine/orm": "^2.13",
-
+        "firebase/php-jwt": "^6.3",
+        "guzzlehttp/guzzle": "^7.5",
+        "nelmio/cors-bundle": "^2.2",
+        "nesbot/carbon": "^2.64",
+        "ramsey/uuid": "^4.6",
+        "ramsey/uuid-doctrine": "^1.8",
         "symfony/asset": "6.1.*",
         "symfony/console": "6.1.*",
         "symfony/dotenv": "6.1.*",
@@ -32,6 +34,7 @@
         "symfony/mercure-bundle": "^0.3.5",
         "symfony/messenger": "6.1.*",
         "symfony/monolog-bundle": "^3.8",
+        "symfony/password-hasher": "6.1.*",
         "symfony/property-access": "6.1.*",
         "symfony/property-info": "6.1.*",
         "symfony/proxy-manager-bridge": "6.1.*",
@@ -42,12 +45,6 @@
         "symfony/uid": "6.1.*",
         "symfony/validator": "6.1.*",
         "symfony/yaml": "6.1.*",
-
-        "guzzlehttp/guzzle": "^7.5",
-        "nelmio/cors-bundle": "^2.2",
-        "nesbot/carbon": "^2.64",
-        "ramsey/uuid": "^4.6",
-        "ramsey/uuid-doctrine": "^1.8",
         "webmozart/assert": "^1.11"
     },
     "config": {

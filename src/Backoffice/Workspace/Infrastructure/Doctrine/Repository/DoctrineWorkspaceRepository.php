@@ -6,22 +6,21 @@ namespace App\Backoffice\Workspace\Infrastructure\Doctrine\Repository;
 
 use App\Backoffice\Workspace\Domain\Entity\Workspace;
 use App\Backoffice\Workspace\Domain\Repository\WorkspaceRepository;
-use App\Common\Infrastructure\Doctrine\Repository\DoctrineRepository;
-use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Persistence\ManagerRegistry;
 
-final class DoctrineWorkspaceRepository extends DoctrineRepository implements WorkspaceRepository
+final class DoctrineWorkspaceRepository extends ServiceEntityRepository implements WorkspaceRepository
 {
-    private const ENTITY_CLASS = Workspace::class;
     private const ALIAS = 'workspace';
 
-    public function __construct(EntityManagerInterface $em)
+    public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($em, self::ENTITY_CLASS, self::ALIAS);
+        parent::__construct($registry, Workspace::class);
     }
 
-    public function save(Workspace $workspace): void
+    public function add(Workspace $workspace): void
     {
-        $this->em->persist($workspace);
-        $this->em->flush();
+        $this->getEntityManager()->persist($workspace);
+        $this->getEntityManager()->flush();
     }
 }

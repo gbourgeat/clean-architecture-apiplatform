@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Messaging\Application\UseCase\SendMessage;
 
-use App\Backoffice\Users\Domain\Repository\UserRepository;
+use App\Backoffice\User\Domain\Repository\UserRepository;
 use App\Common\Application\Command\CommandHandler;
 use App\Messaging\Domain\Exception\UserIsNotParticipantOfConversation;
 use App\Messaging\Domain\Repository\ConversationRepository;
