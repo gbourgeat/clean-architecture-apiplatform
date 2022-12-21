@@ -16,11 +16,9 @@ final class PasswordHasherService implements PasswordHasher
 {
     use CheckPasswordLengthTrait;
 
-    private PasswordHasherInterface $passwordHasher;
-
-    public function __construct()
-    {
-        $this->passwordHasher = new NativePasswordHasher();
+    public function __construct(
+        private PasswordHasherInterface $passwordHasher = new NativePasswordHasher(),
+    ) {
     }
 
     public function hash(Password $password): HashedPassword
