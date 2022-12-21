@@ -6,7 +6,6 @@ namespace App\Common\UserInterface\Security;
 
 use App\Authentication\Application\DTO\AuthUserDTO;
 use App\Authentication\Application\UseCase\GetFromToken\GetFromTokenQuery;
-use App\Common\Application\Command\CommandBus;
 use App\Common\Application\Query\QueryBus;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,7 +17,7 @@ use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
 use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
 use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPassport;
 
-class Authenticator extends AbstractAuthenticator
+final class Authenticator extends AbstractAuthenticator
 {
     public const HEADER_AUTHORIZATION = 'AUTHORIZATION';
 
@@ -36,10 +35,10 @@ class Authenticator extends AbstractAuthenticator
     {
         $explodeBearerToken = explode(' ', $request->headers->get(self::HEADER_AUTHORIZATION));
 
-        $authUser = $this->authUserFromAuthToken($explodeBearerToken[1]);
+        $auth = Auth::fromAuthUser($this->authUserFromAuthToken($explodeBearerToken[1]));
 
-        return new SelfValidatingPassport(new UserBadge($authUser->userId, static function () use ($authUser) {
-            return $authUser;
+        return new SelfValidatingPassport(new UserBadge($auth->getUserIdentifier(), static function () use ($auth) {
+            return $auth;
         }));
     }
 

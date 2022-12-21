@@ -5,13 +5,10 @@ declare(strict_types=1);
 namespace App\Common\UserInterface\Security;
 
 use App\Authentication\Application\DTO\AuthUserDTO;
-use Symfony\Component\PasswordHasher\Hasher\PasswordHasherAwareInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-final class Auth implements UserInterface, PasswordHasherAwareInterface
+final class Auth implements UserInterface
 {
-    public const PASSWORD_HASHER_ALGORITHM = 'bcrypt';
-
     private function __construct(
         private readonly AuthUserDTO $authUser,
     ) {
@@ -34,10 +31,5 @@ final class Auth implements UserInterface, PasswordHasherAwareInterface
     public function getUserIdentifier(): string
     {
         return $this->authUser->userId;
-    }
-
-    public function getPasswordHasherName(): ?string
-    {
-        return self::PASSWORD_HASHER_ALGORITHM;
     }
 }
