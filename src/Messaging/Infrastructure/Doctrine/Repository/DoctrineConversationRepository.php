@@ -25,13 +25,11 @@ class DoctrineConversationRepository extends ServiceEntityRepository implements 
     public function add(Conversation $conversation): void
     {
         $this->getEntityManager()->persist($conversation);
-        $this->getEntityManager()->flush();
     }
 
     public function remove(Conversation $conversation): void
     {
         $this->getEntityManager()->remove($conversation);
-        $this->getEntityManager()->flush();
     }
 
     /**

@@ -21,6 +21,5 @@ final class DoctrineWorkspaceRepository extends ServiceEntityRepository implemen
     public function add(Workspace $workspace): void
     {
         $this->getEntityManager()->persist($workspace);
-        $this->getEntityManager()->flush();
     }
 }

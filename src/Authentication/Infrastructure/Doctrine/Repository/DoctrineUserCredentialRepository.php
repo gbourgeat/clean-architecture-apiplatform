@@ -41,6 +41,5 @@ final class DoctrineUserCredentialRepository extends ServiceEntityRepository imp
     public function add(UserCredential $userCredential): void
     {
         $this->getEntityManager()->persist($userCredential);
-        $this->getEntityManager()->flush();
     }
 }
