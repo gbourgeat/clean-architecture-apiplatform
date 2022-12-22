@@ -24,7 +24,7 @@ class UserProvider implements ProviderInterface
     {
         try {
             /** @var ?User $user */
-            $user = $this->queryBus->ask(new GetUserByIdQuery(UserId::fromString((string) $uriVariables['id'])));
+            $user = $this->queryBus->ask(new GetUserByIdQuery((string)$uriVariables['id']));
         } catch (\InvalidArgumentException $exception) {
             throw new HttpException(400, $exception->getMessage());
         }
