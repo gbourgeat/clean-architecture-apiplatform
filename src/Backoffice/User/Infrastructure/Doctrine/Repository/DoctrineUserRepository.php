@@ -23,7 +23,6 @@ class DoctrineUserRepository extends ServiceEntityRepository implements UserRepo
     public function add(User $user): void
     {
         $this->getEntityManager()->persist($user);
-        $this->getEntityManager()->flush();
     }
 
     /**
