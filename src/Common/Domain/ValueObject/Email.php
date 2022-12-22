@@ -4,24 +4,35 @@ declare(strict_types=1);
 
 namespace App\Common\Domain\ValueObject;
 
+use App\Common\Domain\Exception\InvalidFormat;
+
 final class Email extends StringValue
 {
+    /**
+     * @throws InvalidFormat
+     */
     private function __construct(protected string $value)
     {
-        parent::__construct($this->value);
+        $this->ensureIsValidEmail($value);
 
-        $this->ensureIsValidEmail($this->value);
+        parent::__construct($this->value);
     }
 
+    /**
+     * @throws InvalidFormat
+     */
     public static function fromString(string $value): static
     {
-        return new self($value);
+        return new static($value);
     }
 
+    /**
+     * @throws InvalidFormat
+     */
     private function ensureIsValidEmail(string $email): void
     {
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            throw new \InvalidArgumentException(sprintf('The email "%s" is not valid.', $email));
+            throw new InvalidFormat(sprintf('The email "%s" is not valid.', $email));
         }
     }
 }

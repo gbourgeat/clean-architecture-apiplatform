@@ -18,7 +18,9 @@ api_platform:
                 name: Authorization
                 type: header
     exception_to_status:
-        InvalidArgumentException: 422
+        \App\Common\Domain\Exception\ValidationFailed: 400
+        \App\Common\Domain\Exception\LogicFailed: 400
+        \App\Common\Domain\Exception\ResourceNotFound: 404
     formats:
         json: ['application/json']
         html: ['text/html']

@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Authentication\Domain\Exception;
 
-final class NewPasswordShouldBeDifferentOfCurrentPassword extends \DomainException
+use App\Common\Domain\Exception\ValidationFailed;
+
+final class NewPasswordShouldBeDifferentOfCurrentPassword extends ValidationFailed
 {
     public function __construct()
     {

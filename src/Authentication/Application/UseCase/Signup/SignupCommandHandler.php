@@ -7,6 +7,8 @@ namespace App\Authentication\Application\UseCase\Signup;
 use App\Authentication\Application\DTO\AuthTokenDTO;
 use App\Authentication\Application\DTO\AuthUserDTO;
 use App\Authentication\Domain\Entity\UserCredential;
+use App\Authentication\Domain\Exception\CredentialNotFoundForUsername;
+use App\Authentication\Domain\Exception\UsernameAlreadyUsed;
 use App\Authentication\Domain\Repository\UserCredentialRepository;
 use App\Authentication\Domain\Service\PasswordHasher;
 use App\Authentication\Domain\ValueObject\Password;
@@ -30,28 +32,60 @@ final class SignupCommandHandler implements CommandHandler
 
     public function __invoke(SignupCommand $command): AuthTokenDTO
     {
-        if ($command->password !== $command->passwordConfirm) {
-            throw new \RuntimeException('Invalid password confirm');
-        }
+        $this->ensurePasswordConfirmIsValid(Password::fromString($command->password), Password::fromString($command->passwordConfirm));
+        $this->ensureUsernameIsAvailable(Username::fromString($command->email));
 
-        /** @var UserDTO $userDTO */
-        $userDTO = $this->commandBus
-            ->dispatch(
-                new CreateUserCommand(
-                    firstName: $command->firstName,
-                    lastName: $command->lastName,
-                    email: $command->email,
-                )
-            );
+        // User is created first for generate UserId to use in creating of credentials
+        $user = $this->createUser(
+            firstName: $command->firstName,
+            lastName: $command->lastName,
+            email: $command->email,
+        );
 
         $userCredential = UserCredential::create(
-            userId: UserId::fromString($userDTO->id),
+            userId: UserId::fromString($user->id),
             username: Username::fromString($command->email),
             hashedPassword: $this->passwordHasher->hash(Password::fromString($command->password)),
         );
 
         $this->userCredentialRepository->add($userCredential);
 
-        return $this->tokenService->encode(AuthUserDTO::createFromUserDTO($userDTO));
+        return $this->tokenService->encode(AuthUserDTO::createFromUserDTO($user));
+    }
+
+    private function ensurePasswordConfirmIsValid(Password $password, Password $passwordConfirm): void
+    {
+        if (!$password->isEqual($passwordConfirm)) {
+            throw new \RuntimeException('Invalid password confirm');
+        }
+    }
+
+    /**
+     * @throws UsernameAlreadyUsed
+     */
+    private function ensureUsernameIsAvailable(Username $username): void
+    {
+        try {
+            $this->userCredentialRepository->getByUsername($username);
+        } catch (CredentialNotFoundForUsername) {
+            return;
+        }
+
+        throw new UsernameAlreadyUsed($username);
+    }
+
+    /**
+     * @throws UsernameAlreadyUsed
+     */
+    private function createUser(string $firstName, string $lastName, string $email): UserDTO
+    {
+        return $this->commandBus
+            ->dispatch(
+                new CreateUserCommand(
+                    firstName: $firstName,
+                    lastName: $lastName,
+                    email: $email,
+                )
+            );
     }
 }
