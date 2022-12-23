@@ -1,4 +1,5 @@
 api_platform:
+    show_webby: false
     enable_swagger_ui: true
     enable_re_doc: false
     mapping:
@@ -21,6 +22,3 @@ api_platform:
         \App\Common\Domain\Exception\ValidationFailed: 400
         \App\Common\Domain\Exception\LogicFailed: 400
         \App\Common\Domain\Exception\ResourceNotFound: 404
-    formats:
-        json: ['application/json']
-        html: ['text/html']
