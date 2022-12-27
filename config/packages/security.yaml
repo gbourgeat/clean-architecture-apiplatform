@@ -1,18 +1,23 @@
 security:
     enable_authenticator_manager: true
 
+    providers:
+        jwt_user_provider:
+            id: App\Common\UserInterface\Security\JWTUserProvider
+
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         main:
             lazy: true
-            stateless: false
+            stateless: true
+            provider: jwt_user_provider
             custom_authenticators:
-                - App\Common\UserInterface\Security\Authenticator
+                - App\Common\UserInterface\Security\JWTAuthenticator
 
     access_control:
         - { path: ^/$, roles: PUBLIC_ACCESS }
         - { path: ^/docs, roles: PUBLIC_ACCESS }
         - { path: ^/auth, roles: PUBLIC_ACCESS }
-        - { path: ^/, roles: ROLE_USER }
+        - { path: ^/, roles: IS_AUTHENTICATED_FULLY }

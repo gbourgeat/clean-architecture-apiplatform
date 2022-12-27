@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace App\Authentication\Application\UseCase\Login;
 
 use App\Authentication\Application\DTO\AuthTokenDTO;
-use App\Authentication\Application\DTO\AuthUserDTO;
 use App\Authentication\Domain\Exception\InvalidCredentials;
 use App\Authentication\Domain\Repository\UserCredentialRepository;
 use App\Authentication\Domain\Service\PasswordHasher;
 use App\Authentication\Domain\ValueObject\Password;
 use App\Authentication\Domain\ValueObject\Username;
 use App\Authentication\Infrastructure\Symfony\Service\TokenService;
+use App\Backoffice\User\Application\DTO\UserDTO;
 use App\Backoffice\User\Application\UseCase\GetUserById\GetUserByIdQuery;
 use App\Common\Application\Command\CommandHandler;
 use App\Common\Application\Query\QueryBus;
@@ -26,6 +26,9 @@ final class LoginCommandHandler implements CommandHandler
     ) {
     }
 
+    /**
+     * @throws InvalidCredentials
+     */
     public function __invoke(LoginCommand $command): AuthTokenDTO
     {
         try {
@@ -38,6 +41,7 @@ final class LoginCommandHandler implements CommandHandler
             throw new InvalidCredentials();
         }
 
+        /** @var UserDTO $userDTO */
         $userDTO = $this->queryBus
             ->ask(
                 new GetUserByIdQuery(
@@ -45,6 +49,13 @@ final class LoginCommandHandler implements CommandHandler
                 )
             );
 
-        return $this->tokenService->encode(AuthUserDTO::createFromUserDTO($userDTO));
+        $tokenPayload = [
+            'userId' => $userDTO->id,
+            'email' => $userDTO->email,
+            'firstName' => $userDTO->firstName,
+            'lastName' => $userDTO->lastName,
+        ];
+
+        return AuthTokenDTO::fromString($this->tokenService->encode($tokenPayload));
     }
 }

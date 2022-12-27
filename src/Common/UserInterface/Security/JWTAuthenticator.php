@@ -4,38 +4,34 @@ declare(strict_types=1);
 
 namespace App\Common\UserInterface\Security;
 
-use App\Authentication\Application\DTO\AuthUserDTO;
-use App\Authentication\Application\UseCase\GetFromToken\GetFromTokenQuery;
-use App\Common\Application\Query\QueryBus;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
+use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Http\Authenticator\AbstractAuthenticator;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
 use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
 use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPassport;
 
-final class Authenticator extends AbstractAuthenticator
+final class JWTAuthenticator extends AbstractAuthenticator
 {
-    public const HEADER_AUTHORIZATION = 'AUTHORIZATION';
+    public const HEADER_NAME = 'AUTHORIZATION';
 
     public function __construct(
-        private readonly QueryBus $queryBus,
+        private readonly UserProviderInterface $userProvider,
     ) {
     }
 
     public function supports(Request $request): ?bool
     {
-        return $request->headers->has(self::HEADER_AUTHORIZATION);
+        return $request->headers->has(self::HEADER_NAME);
     }
 
     public function authenticate(Request $request): Passport
     {
-        $explodeBearerToken = explode(' ', $request->headers->get(self::HEADER_AUTHORIZATION));
-
-        $auth = Auth::fromAuthUser($this->authUserFromAuthToken($explodeBearerToken[1]));
+        $auth = $this->userProvider->loadUserByIdentifier($request->headers->get(self::HEADER_NAME));
 
         return new SelfValidatingPassport(new UserBadge($auth->getUserIdentifier(), static function () use ($auth) {
             return $auth;
@@ -54,15 +50,5 @@ final class Authenticator extends AbstractAuthenticator
         ];
 
         return new JsonResponse($data, Response::HTTP_UNAUTHORIZED);
-    }
-
-    public function authUserFromAuthToken(string $authToken): AuthUserDTO
-    {
-        return $this->queryBus
-            ->ask(
-                new GetFromTokenQuery(
-                    token: $authToken,
-                )
-            );
     }
 }

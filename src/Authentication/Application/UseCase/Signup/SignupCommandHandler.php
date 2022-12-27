@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Authentication\Application\UseCase\Signup;
 
 use App\Authentication\Application\DTO\AuthTokenDTO;
-use App\Authentication\Application\DTO\AuthUserDTO;
 use App\Authentication\Domain\Entity\UserCredential;
 use App\Authentication\Domain\Exception\CredentialNotFoundForUsername;
 use App\Authentication\Domain\Exception\UsernameAlreadyUsed;
@@ -50,7 +49,14 @@ final class SignupCommandHandler implements CommandHandler
 
         $this->userCredentialRepository->add($userCredential);
 
-        return $this->tokenService->encode(AuthUserDTO::createFromUserDTO($user));
+        $tokenPayload = [
+            'userId' => $user->id,
+            'email' => $user->email,
+            'firstName' => $user->firstName,
+            'lastName' => $user->lastName,
+        ];
+
+        return AuthTokenDTO::fromString($this->tokenService->encode($tokenPayload));
     }
 
     private function ensurePasswordConfirmIsValid(Password $password, Password $passwordConfirm): void

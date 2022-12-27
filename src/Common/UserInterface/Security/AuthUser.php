@@ -7,16 +7,16 @@ namespace App\Common\UserInterface\Security;
 use App\Authentication\Application\DTO\AuthUserDTO;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-final class Auth implements UserInterface
+final class AuthUser implements UserInterface
 {
     private function __construct(
         private readonly AuthUserDTO $authUser,
     ) {
     }
 
-    public static function fromAuthUser(AuthUserDTO $authUser): self
+    public static function fromAuthUserDTO(AuthUserDTO $authUserDTO): self
     {
-        return new self($authUser);
+        return new self($authUserDTO);
     }
 
     public function getRoles(): array
