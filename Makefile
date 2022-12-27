@@ -6,14 +6,18 @@ php:
 	@$(EXEC) sh
 
 install:
-	@$(MAKE) certs
+	@$(MAKE) generate-localhost-certs
+	@$(MAKE) generate-jwt-keypair
 	@$(DC) build
 	@$(MAKE) start -s
 	@$(MAKE) vendor -s
 	@$(MAKE) db-reset -s
 
-certs:
-	sh create-local-certs.sh
+generate-localhost-certs:
+	sh generate-localhost-certs.sh
+
+generate-jwt-keypair:
+	sh generate-jwt-keypair.sh
 
 vendor:
 	@$(COMPOSER) install --optimize-autoloader
@@ -25,7 +29,7 @@ stop:
 	@$(DC) kill
 	@$(DC) rm -v --force
 
-.PHONY: php install certs vendor start stop
+.PHONY: php install generate-localhost-certs generate-jwt-keypair vendor start stop
 
 db-create:
 	@$(EXEC) bin/console doctrine:database:drop --force --if-exists -nq
