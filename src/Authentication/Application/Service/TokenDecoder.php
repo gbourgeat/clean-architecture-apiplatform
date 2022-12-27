@@ -9,5 +9,5 @@ use App\Authentication\Application\DTO\AuthUserDTO;
 
 interface TokenDecoder
 {
-    public function decode(AuthTokenDTO $token): AuthUserDTO;
+    public function decode(string $token): array;
 }

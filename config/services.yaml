@@ -2,6 +2,9 @@ services:
     _defaults:
         autowire: true
         autoconfigure: true
+        bind:
+            'string $jwtPrivateKey': '%env(resolve:JWT_PRIVATE_KEY)%'
+            'string $jwtPublicKey': '%env(resolve:JWT_PUBLIC_KEY)%'
 
     _instanceof:
 

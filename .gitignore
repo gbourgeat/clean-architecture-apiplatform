@@ -10,3 +10,4 @@
 
 /.idea/
 /docker/certs/
+/docker/jwt/

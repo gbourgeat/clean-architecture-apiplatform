@@ -7,6 +7,9 @@ if [ "${1#-}" != "$1" ]; then
 fi
 
 if [ "$1" = 'php-fpm' ] || [ "$1" = 'php' ] || [ "$1" = 'bin/console' ]; then
+	setfacl -R -m u:www-data:rX -m u:"$(whoami)":rwX config/jwt
+	setfacl -dR -m u:www-data:rX -m u:"$(whoami)":rwX config/jwt
+
 	setfacl -R -m u:www-data:rwX -m u:"$(whoami)":rwX var
 	setfacl -dR -m u:www-data:rwX -m u:"$(whoami)":rwX var
 

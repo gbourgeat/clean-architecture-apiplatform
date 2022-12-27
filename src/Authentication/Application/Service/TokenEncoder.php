@@ -9,5 +9,5 @@ use App\Authentication\Application\DTO\AuthUserDTO;
 
 interface TokenEncoder
 {
-    public function encode(AuthUserDTO $authUserDTO): AuthTokenDTO;
+    public function encode(array $payload): string;
 }
