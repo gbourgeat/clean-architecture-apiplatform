@@ -10,13 +10,18 @@ use Symfony\Component\Security\Core\User\UserInterface;
 final class AuthUser implements UserInterface
 {
     private function __construct(
-        private readonly AuthUserDTO $authUser,
+        private readonly AuthUserDTO $authUserDTO,
     ) {
     }
 
     public static function fromAuthUserDTO(AuthUserDTO $authUserDTO): self
     {
         return new self($authUserDTO);
+    }
+
+    public function authUserDTO(): AuthUserDTO
+    {
+        return $this->authUserDTO;
     }
 
     public function getRoles(): array
@@ -30,6 +35,6 @@ final class AuthUser implements UserInterface
 
     public function getUserIdentifier(): string
     {
-        return $this->authUser->userId;
+        return $this->authUserDTO->userId;
     }
 }
