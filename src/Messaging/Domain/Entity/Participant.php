@@ -13,11 +13,8 @@ use App\Messaging\Domain\ValueObject\ParticipantName;
 class Participant
 {
     private ParticipantId $id;
-
     private ParticipantName $name;
-
     private UserId $userId;
-
     private bool $isArchived;
 
     private function __construct(
@@ -37,12 +34,6 @@ class Participant
         return new self($userDTO, $conversation);
     }
 
-    /*
-     * ===============================
-     * == Actions
-     * ===============================
-     */
-
     /**
      * @throws ConversationAlreadyArchivedByParticipant
      */
@@ -52,12 +43,6 @@ class Participant
 
         $this->isArchived = true;
     }
-
-    /*
-     * ===============================
-     * == Getters
-     * ===============================
-     */
 
     public function id(): ParticipantId
     {
@@ -83,12 +68,6 @@ class Participant
     {
         return $this->isArchived;
     }
-
-    /*
-     * ===============================
-     * == Validators
-     * ===============================
-     */
 
     /**
      * @throws ConversationAlreadyArchivedByParticipant

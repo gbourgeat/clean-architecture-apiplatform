@@ -97,12 +97,6 @@ class Conversation extends AggregateRoot
         $participant->archive();
     }
 
-    /*
-     * ===============================
-     * == Getters
-     * ===============================
-     */
-
     public function id(): ConversationId
     {
         return $this->id;

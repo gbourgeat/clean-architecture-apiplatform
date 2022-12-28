@@ -49,12 +49,6 @@ class User extends AggregateRoot
         );
     }
 
-    /*
-     * ===============================
-     * == Getters
-     * ===============================
-     */
-
     public function id(): UserId
     {
         return $this->id;
@@ -100,12 +94,6 @@ class User extends AggregateRoot
         return $this->managedWorkspaces;
     }
 
-    /*
-     * ===============================
-     * == Actions
-     * ===============================
-     */
-
     public function enable(): void
     {
         $this->ensureIsNotAlreadyEnabled();
@@ -121,12 +109,6 @@ class User extends AggregateRoot
         $this->status = UserStatus::REMOVED;
         $this->removedAt = DateTime::now();
     }
-
-    /*
-     * ===============================
-     * == Validators
-     * ===============================
-     */
 
     private function ensureIsNotAlreadyEnabled(): void
     {

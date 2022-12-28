@@ -26,12 +26,6 @@ class UserCredential
         return new self($userId, $username, $hashedPassword);
     }
 
-    /*
-     * ===============================
-     * == Getters
-     * ===============================
-     */
-
     public function userId(): UserId
     {
         return $this->userId;
@@ -46,12 +40,6 @@ class UserCredential
     {
         return $this->hashedPassword;
     }
-
-    /*
-     * ===============================
-     * == Actions
-     * ===============================
-     */
 
     public function changeUsername(Username $username): void
     {
