@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace App\Messaging\Domain\Entity;
 
+use App\Authentication\Application\DTO\AuthUserDTO;
 use App\Backoffice\User\Application\DTO\UserDTO;
-use App\Backoffice\User\Domain\Entity\User;
+use App\Backoffice\User\Domain\ValueObject\UserId;
 use App\Common\Domain\Entity\AggregateRoot;
 use App\Messaging\Domain\Exception\NotEnoughParticipants;
 use App\Messaging\Domain\Exception\ParticipantNotFoundInConversation;
+use App\Messaging\Domain\Exception\UserIsNotParticipantOfConversation;
 use App\Messaging\Domain\ValueObject\ConversationId;
 use App\Messaging\Domain\ValueObject\MessageContent;
 use Carbon\Carbon;
@@ -19,28 +21,14 @@ class Conversation extends AggregateRoot
 {
     public const MIN_PARTICIPANTS = 2;
 
-    /**
-     * Identifier.
-     */
     private ConversationId $id;
 
-    /**
-     * Date of creating.
-     */
     private Carbon $createdAt;
 
-    /**
-     * Messages.
-     *
-     * @var Collection<int, Message>
-     */
+    /** @var Collection<int, Message> */
     private Collection $messages;
 
-    /**
-     * Participants.
-     *
-     * @var Collection<int, Participant>
-     */
+    /** @var Collection<int, Participant> */
     private Collection $participants;
 
     /**
@@ -112,18 +100,18 @@ class Conversation extends AggregateRoot
         return $this->participants->toArray();
     }
 
-    /**
-     * Return the participant of conversation which correspond to user given.
-     */
-    public function participantFromUser(User $user): ?Participant
+    public function participantFromAuthUser(AuthUserDTO $authUser): Participant
     {
         foreach ($this->participants as $participant) {
-            if ($participant->user()->id()->equals($user->id())) {
+            if ($participant->user()->id()->equals($authUser->userId)) {
                 return $participant;
             }
         }
 
-        return null;
+        throw new UserIsNotParticipantOfConversation(
+            userId: UserId::fromString($authUser->userId),
+            conversationId: $this->id(),
+        );
     }
 
     private function ensureParticipantIsInConversation(Participant $participant): void

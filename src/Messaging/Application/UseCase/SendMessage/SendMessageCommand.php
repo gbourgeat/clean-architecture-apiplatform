@@ -9,7 +9,6 @@ use App\Common\Application\Command\Command;
 final class SendMessageCommand implements Command
 {
     public function __construct(
-        public readonly string $connectedUserId,
         public readonly string $conversationId,
         public readonly string $messageContent,
     ) {
