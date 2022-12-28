@@ -9,6 +9,7 @@ use App\Backoffice\User\Domain\Entity\User;
 use App\Backoffice\User\Domain\Exception\EmailAlreadyUsed;
 use App\Backoffice\User\Domain\Repository\UserRepository;
 use App\Common\Application\Command\CommandHandler;
+use App\Common\Domain\Exception\InvalidFormat;
 use App\Common\Domain\ValueObject\Email;
 use App\Common\Domain\ValueObject\FirstName;
 use App\Common\Domain\ValueObject\LastName;
@@ -21,12 +22,11 @@ final class CreateUserCommandHandler implements CommandHandler
     }
 
     /**
-     * @throws EmailAlreadyUsed
+     * @throws EmailAlreadyUsed|InvalidFormat
      */
     public function __invoke(CreateUserCommand $command): UserDTO
     {
         $email = Email::fromString($command->email);
-
         $this->ensureEmailNotExist($email);
 
         $user = User::create(
