@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Authentication\Application\UseCase\Signup;
 
 use App\Authentication\Application\DTO\AuthTokenDTO;
+use App\Authentication\Application\Service\TokenEncoder;
 use App\Authentication\Domain\Entity\UserCredential;
 use App\Authentication\Domain\Exception\CredentialNotFoundForUsername;
 use App\Authentication\Domain\Exception\UsernameAlreadyUsed;
@@ -12,7 +13,6 @@ use App\Authentication\Domain\Repository\UserCredentialRepository;
 use App\Authentication\Domain\Service\PasswordHasher;
 use App\Authentication\Domain\ValueObject\Password;
 use App\Authentication\Domain\ValueObject\Username;
-use App\Authentication\Infrastructure\Symfony\Service\TokenService;
 use App\Backoffice\User\Application\DTO\UserDTO;
 use App\Backoffice\User\Application\UseCase\CreateUser\CreateUserCommand;
 use App\Backoffice\User\Domain\ValueObject\UserId;
@@ -25,10 +25,13 @@ final class SignupCommandHandler implements CommandHandler
         private readonly CommandBus $commandBus,
         private readonly PasswordHasher $passwordHasher,
         private readonly UserCredentialRepository $userCredentialRepository,
-        private readonly TokenService $tokenService,
+        private readonly TokenEncoder $tokenEncoder,
     ) {
     }
 
+    /**
+     * @throws UsernameAlreadyUsed
+     */
     public function __invoke(SignupCommand $command): AuthTokenDTO
     {
         $this->ensurePasswordConfirmIsValid(Password::fromString($command->password), Password::fromString($command->passwordConfirm));
@@ -56,7 +59,7 @@ final class SignupCommandHandler implements CommandHandler
             'lastName' => $user->lastName,
         ];
 
-        return AuthTokenDTO::fromString($this->tokenService->encode($tokenPayload));
+        return AuthTokenDTO::fromString($this->tokenEncoder->encode($tokenPayload));
     }
 
     private function ensurePasswordConfirmIsValid(Password $password, Password $passwordConfirm): void
@@ -80,9 +83,6 @@ final class SignupCommandHandler implements CommandHandler
         throw new UsernameAlreadyUsed($username);
     }
 
-    /**
-     * @throws UsernameAlreadyUsed
-     */
     private function createUser(string $firstName, string $lastName, string $email): UserDTO
     {
         return $this->commandBus

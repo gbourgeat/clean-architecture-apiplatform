@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace App\Authentication\Application\UseCase\Login;
 
 use App\Authentication\Application\DTO\AuthTokenDTO;
+use App\Authentication\Application\Service\TokenEncoder;
 use App\Authentication\Domain\Exception\InvalidCredentials;
 use App\Authentication\Domain\Repository\UserCredentialRepository;
 use App\Authentication\Domain\Service\PasswordHasher;
 use App\Authentication\Domain\ValueObject\Password;
 use App\Authentication\Domain\ValueObject\Username;
-use App\Authentication\Infrastructure\Symfony\Service\TokenService;
 use App\Backoffice\User\Application\DTO\UserDTO;
 use App\Backoffice\User\Application\UseCase\GetUserById\GetUserByIdQuery;
 use App\Common\Application\Command\CommandHandler;
@@ -22,7 +22,7 @@ final class LoginCommandHandler implements CommandHandler
         private readonly QueryBus $queryBus,
         private readonly UserCredentialRepository $userCredentialRepository,
         private readonly PasswordHasher $passwordHasher,
-        private readonly TokenService $tokenService,
+        private readonly TokenEncoder $tokenEncoder,
     ) {
     }
 
@@ -56,6 +56,6 @@ final class LoginCommandHandler implements CommandHandler
             'lastName' => $userDTO->lastName,
         ];
 
-        return AuthTokenDTO::fromString($this->tokenService->encode($tokenPayload));
+        return AuthTokenDTO::fromString($this->tokenEncoder->encode($tokenPayload));
     }
 }
