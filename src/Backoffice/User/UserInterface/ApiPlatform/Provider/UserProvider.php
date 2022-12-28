@@ -6,14 +6,14 @@ namespace App\Backoffice\User\UserInterface\ApiPlatform\Provider;
 
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProviderInterface;
+use App\Backoffice\User\Application\DTO\UserDTO;
 use App\Backoffice\User\Application\UseCase\GetUserById\GetUserByIdQuery;
-use App\Backoffice\User\Domain\Entity\User;
-use App\Backoffice\User\Domain\ValueObject\UserId;
+use App\Backoffice\User\Domain\Exception\UserNotFound;
 use App\Backoffice\User\UserInterface\ApiPlatform\Resource\UserResource;
 use App\Common\Application\Query\QueryBus;
-use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-class UserProvider implements ProviderInterface
+final class UserProvider implements ProviderInterface
 {
     public function __construct(
         private readonly QueryBus $queryBus,
@@ -23,12 +23,20 @@ class UserProvider implements ProviderInterface
     public function provide(Operation $operation, array $uriVariables = [], array $context = []): object|array|null
     {
         try {
-            /** @var ?User $user */
-            $user = $this->queryBus->ask(new GetUserByIdQuery((string)$uriVariables['id']));
-        } catch (\InvalidArgumentException $exception) {
-            throw new HttpException(400, $exception->getMessage());
+            $userId = (string) $uriVariables['id'];
+            $userDTO = $this->getUserById($userId);
+        } catch (UserNotFound $exception) {
+            throw new NotFoundHttpException($exception->getMessage());
         }
 
-        return null !== $user ? UserResource::fromEntity($user) : null;
+        return UserResource::fromUserDTO($userDTO);
+    }
+
+    /**
+     * @throws UserNotFound
+     */
+    private function getUserById(string $userId): UserDTO
+    {
+        return $this->queryBus->ask(new GetUserByIdQuery($userId));
     }
 }

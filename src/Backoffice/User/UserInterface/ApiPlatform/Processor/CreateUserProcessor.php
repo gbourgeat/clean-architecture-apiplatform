@@ -6,16 +6,16 @@ namespace App\Backoffice\User\UserInterface\ApiPlatform\Processor;
 
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProcessorInterface;
-use App\Authentication\Application\UseCase\Signup\SignupCommand;
-use App\Backoffice\User\Domain\Entity\User;
+use App\Backoffice\User\Application\DTO\UserDTO;
+use App\Backoffice\User\Application\UseCase\CreateUser\CreateUserCommand;
+use App\Backoffice\User\Domain\Exception\EmailAlreadyUsed;
 use App\Backoffice\User\UserInterface\ApiPlatform\Resource\UserResource;
 use App\Common\Application\Command\CommandBus;
-use App\Common\Domain\ValueObject\Email;
-use App\Common\Domain\ValueObject\FirstName;
-use App\Common\Domain\ValueObject\LastName;
+use App\Common\Domain\Exception\InvalidFormat;
+use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Webmozart\Assert\Assert;
 
-class CreateUserProcessor implements ProcessorInterface
+final class CreateUserProcessor implements ProcessorInterface
 {
     public function __construct(
         private readonly CommandBus $commandBus,
@@ -28,16 +28,27 @@ class CreateUserProcessor implements ProcessorInterface
         /** @var UserResource $userResource */
         $userResource = $data;
 
-        /** @var User $user */
-        $user = $this->commandBus
+        try {
+            $userDTO = $this->createUserAndReturnUserDTO($userResource);
+        } catch (EmailAlreadyUsed|InvalidFormat $exception) {
+            throw new BadRequestException($exception->getMessage());
+        }
+
+        return UserResource::fromUserDTO($userDTO);
+    }
+
+    /**
+     * @throws EmailAlreadyUsed|InvalidFormat
+     */
+    private function createUserAndReturnUserDTO(UserResource $userResource): UserDTO
+    {
+        return $this->commandBus
             ->dispatch(
-                new SignupCommand(
-                    firstName: FirstName::fromString($userResource->firstName),
-                    lastName: LastName::fromString($userResource->lastName),
-                    email: Email::fromString($userResource->email),
+                new CreateUserCommand(
+                    firstName: $userResource->firstName,
+                    lastName: $userResource->lastName,
+                    email: $userResource->email,
                 )
             );
-
-        return UserResource::fromEntity($user);
     }
 }
