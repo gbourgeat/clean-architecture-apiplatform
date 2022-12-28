@@ -23,4 +23,6 @@ interface UserRepository extends Repository
     public function get(UserId $id): User;
 
     public function emailExist(Email $email): bool;
+
+    public function search(int $pageNumber, int $itemsPerPage): array;
 }

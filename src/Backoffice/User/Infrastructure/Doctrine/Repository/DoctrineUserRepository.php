@@ -11,9 +11,10 @@ use App\Backoffice\User\Domain\Repository\UserRepository;
 use App\Backoffice\User\Domain\ValueObject\UserId;
 use App\Common\Domain\ValueObject\Email;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query\Expr\OrderBy;
 use Doctrine\Persistence\ManagerRegistry;
 
-class DoctrineUserRepository extends ServiceEntityRepository implements UserRepository
+final class DoctrineUserRepository extends ServiceEntityRepository implements UserRepository
 {
     private const ALIAS = 'user';
 
@@ -46,5 +47,17 @@ class DoctrineUserRepository extends ServiceEntityRepository implements UserRepo
         $userWithEmail = $this->findOneBy(['email' => $email]);
 
         return (null !== $userWithEmail);
+    }
+
+    public function search(int $pageNumber, int $itemsPerPage): array
+    {
+        $queryBuilder = $this->createQueryBuilder(self::ALIAS);
+
+        $queryBuilder
+            ->setFirstResult(($pageNumber - 1) * $itemsPerPage)
+            ->setMaxResults($itemsPerPage)
+            ->orderBy(new OrderBy(self::ALIAS . '.createdAt'));
+
+        return $queryBuilder->getQuery()->getResult();
     }
 }
