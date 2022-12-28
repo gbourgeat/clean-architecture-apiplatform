@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Authentication\Application\UseCase\Signup;
 
 use App\Authentication\Application\DTO\AuthTokenDTO;
-use App\Authentication\Application\Service\TokenEncoder;
+use App\Authentication\Application\Service\AuthTokenCreator;
 use App\Authentication\Domain\Entity\UserCredential;
 use App\Authentication\Domain\Exception\CredentialNotFoundForUsername;
 use App\Authentication\Domain\Exception\UsernameAlreadyUsed;
@@ -25,7 +25,7 @@ final class SignupCommandHandler implements CommandHandler
         private readonly CommandBus $commandBus,
         private readonly PasswordHasher $passwordHasher,
         private readonly UserCredentialRepository $userCredentialRepository,
-        private readonly TokenEncoder $tokenEncoder,
+        private readonly AuthTokenCreator $authTokenCreator,
     ) {
     }
 
@@ -38,28 +38,21 @@ final class SignupCommandHandler implements CommandHandler
         $this->ensureUsernameIsAvailable(Username::fromString($command->email));
 
         // User is created first for generate UserId to use in creating of credentials
-        $user = $this->createUser(
+        $userDTO = $this->createUser(
             firstName: $command->firstName,
             lastName: $command->lastName,
             email: $command->email,
         );
 
         $userCredential = UserCredential::create(
-            userId: UserId::fromString($user->id),
+            userId: UserId::fromString($userDTO->id),
             username: Username::fromString($command->email),
             hashedPassword: $this->passwordHasher->hash(Password::fromString($command->password)),
         );
 
         $this->userCredentialRepository->add($userCredential);
 
-        $tokenPayload = [
-            'userId' => $user->id,
-            'email' => $user->email,
-            'firstName' => $user->firstName,
-            'lastName' => $user->lastName,
-        ];
-
-        return AuthTokenDTO::fromString($this->tokenEncoder->encode($tokenPayload));
+        return $this->authTokenCreator->createFromUserDTO($userDTO);
     }
 
     private function ensurePasswordConfirmIsValid(Password $password, Password $passwordConfirm): void

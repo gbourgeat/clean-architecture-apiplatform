@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Authentication\Application\UseCase\Login;
 
 use App\Authentication\Application\DTO\AuthTokenDTO;
-use App\Authentication\Application\Service\TokenEncoder;
+use App\Authentication\Application\Service\AuthTokenCreator;
 use App\Authentication\Domain\Exception\InvalidCredentials;
 use App\Authentication\Domain\Repository\UserCredentialRepository;
 use App\Authentication\Domain\Service\PasswordHasher;
@@ -22,7 +22,7 @@ final class LoginCommandHandler implements CommandHandler
         private readonly QueryBus $queryBus,
         private readonly UserCredentialRepository $userCredentialRepository,
         private readonly PasswordHasher $passwordHasher,
-        private readonly TokenEncoder $tokenEncoder,
+        private readonly AuthTokenCreator $authTokenCreator,
     ) {
     }
 
@@ -49,13 +49,6 @@ final class LoginCommandHandler implements CommandHandler
                 )
             );
 
-        $tokenPayload = [
-            'userId' => $userDTO->id,
-            'email' => $userDTO->email,
-            'firstName' => $userDTO->firstName,
-            'lastName' => $userDTO->lastName,
-        ];
-
-        return AuthTokenDTO::fromString($this->tokenEncoder->encode($tokenPayload));
+        return $this->authTokenCreator->createFromUserDTO($userDTO);
     }
 }
