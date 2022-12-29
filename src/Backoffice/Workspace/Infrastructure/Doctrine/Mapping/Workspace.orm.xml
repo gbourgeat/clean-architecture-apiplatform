@@ -6,7 +6,7 @@
     <entity name="App\Backoffice\Workspace\Domain\Entity\Workspace" table="workspaces">
         <id name="id" type="workspace_id" column="id"/>
         <field name="name" column="name" type="workspace_name" nullable="false" unique="false"/>
-        <field name="contactEmail" column="email" type="email" length="256" nullable="false" unique="false"/>
+        <field name="contactEmail" column="email" type="email" nullable="false" unique="false"/>
 
         <field name="createdAt" column="created_at" type="datetime" nullable="false" unique="false"/>
         <indexes>

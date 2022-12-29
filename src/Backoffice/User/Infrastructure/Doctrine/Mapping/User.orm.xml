@@ -6,10 +6,10 @@
     <entity name="App\Backoffice\User\Domain\Entity\User" table="users">
         <id name="id" type="user_id" column="id"/>
 
-        <field name="firstName" column="first_name" type="firstname" length="256" nullable="false" unique="false"/>
-        <field name="lastName" column="last_name" type="lastname" length="256" nullable="false" unique="false"/>
+        <field name="firstName" column="first_name" type="firstname" nullable="false" unique="false"/>
+        <field name="lastName" column="last_name" type="lastname" nullable="false" unique="false"/>
 
-        <field name="email" column="email" type="email" length="256" nullable="false" unique="true"/>
+        <field name="email" column="email" type="email" nullable="false" unique="true"/>
         <indexes>
             <index name="users_email_idx" columns="email"/>
         </indexes>
