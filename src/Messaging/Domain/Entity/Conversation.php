@@ -32,28 +32,28 @@ class Conversation extends AggregateRoot
     private Collection $participants;
 
     /**
-     * @param UserDTO[] $users
+     * @param UserDTO[] $usersDTOs
      */
-    private function __construct(Carbon $createdAt, array $users)
+    private function __construct(Carbon $createdAt, array $usersDTOs)
     {
-        $this->ensureHasEnoughParticipants($users);
+        $this->ensureHasEnoughParticipants($usersDTOs);
 
         $this->id = ConversationId::generate();
         $this->createdAt = $createdAt;
         $this->messages = new ArrayCollection();
         $this->participants = new ArrayCollection();
 
-        foreach ($users as $user) {
-            $this->participants->add(Participant::create($user, $this));
+        foreach ($usersDTOs as $userDTO) {
+            $this->addParticipant(Participant::create($userDTO, $this));
         }
     }
 
     /**
-     * @param UserDTO[] $users
+     * @param UserDTO[] $usersDTOs
      */
-    public static function create(Carbon $createdAt, array $users): self
+    public static function create(Carbon $createdAt, array $usersDTOs): self
     {
-        return new self($createdAt, $users);
+        return new self($createdAt, $usersDTOs);
     }
 
     public function postMessage(Participant $participant, MessageContent $content): void

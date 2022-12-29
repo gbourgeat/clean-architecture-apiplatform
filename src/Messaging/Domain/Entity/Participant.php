@@ -18,12 +18,12 @@ class Participant
     private bool $isArchived;
 
     private function __construct(
-        readonly UserDTO $user,
+        readonly UserDTO $userDTO,
         private readonly Conversation $conversation,
     ) {
         $this->id = ParticipantId::generate();
-        $this->userId = UserId::fromString($this->user->id);
-        $this->name = ParticipantName::fromUserDTO($this->user);
+        $this->userId = UserId::fromString($this->userDTO->id);
+        $this->name = ParticipantName::fromUserDTO($this->userDTO);
         $this->isArchived = false;
     }
 
