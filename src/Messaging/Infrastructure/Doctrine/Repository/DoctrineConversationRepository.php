@@ -11,6 +11,7 @@ use App\Messaging\Domain\Exception\ConversationNotFound;
 use App\Messaging\Domain\Repository\ConversationRepository;
 use App\Messaging\Domain\ValueObject\ConversationId;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query\Expr\OrderBy;
 use Doctrine\Persistence\ManagerRegistry;
 
 class DoctrineConversationRepository extends ServiceEntityRepository implements ConversationRepository
@@ -54,5 +55,17 @@ class DoctrineConversationRepository extends ServiceEntityRepository implements 
         $queryBuilder = $this->createQueryBuilder(self::ALIAS);
 
         return new DoctrineCursorPagination($queryBuilder, $limit, $field, $direction, $cursor);
+    }
+
+    public function search(int $pageNumber, int $itemsPerPage): array
+    {
+        $queryBuilder = $this->createQueryBuilder(self::ALIAS);
+
+        $queryBuilder
+            ->setFirstResult(($pageNumber - 1) * $itemsPerPage)
+            ->setMaxResults($itemsPerPage)
+            ->orderBy(new OrderBy(self::ALIAS . '.createdAt'));
+
+        return $queryBuilder->getQuery()->getResult();
     }
 }

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Messaging\Domain\Repository;
 
-use App\Common\Domain\Repository\CursorPagination;
 use App\Messaging\Domain\Entity\Conversation;
 use App\Messaging\Domain\Exception\ConversationNotFound;
 use App\Messaging\Domain\ValueObject\ConversationId;
@@ -24,5 +23,5 @@ interface ConversationRepository extends Repository
      */
     public function get(ConversationId $conversationId): Conversation;
 
-    public function listCursorPagination(int $limit, string $field, string $direction, ?string $cursor): CursorPagination;
+    public function search(int $pageNumber, int $itemsPerPage): array;
 }
