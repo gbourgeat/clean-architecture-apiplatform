@@ -30,6 +30,7 @@ doctrine:
             # Messaging
             conversation_id: App\Messaging\Infrastructure\Doctrine\Type\ConversationIdType
             participant_id: App\Messaging\Infrastructure\Doctrine\Type\ParticipantIdType
+            participant_name: App\Messaging\Infrastructure\Doctrine\Type\ParticipantNameType
             message_id: App\Messaging\Infrastructure\Doctrine\Type\MessageIdType
             message_content: App\Messaging\Infrastructure\Doctrine\Type\MessageContentType
 

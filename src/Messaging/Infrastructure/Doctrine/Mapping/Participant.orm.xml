@@ -6,12 +6,15 @@
     <entity name="App\Messaging\Domain\Entity\Participant" table="participants">
         <id name="id" type="participant_id" column="id"/>
 
+        <field name="name" type="participant_name" column="name" nullable="false"/>
+
         <many-to-one field="conversation" target-entity="App\Messaging\Domain\Entity\Conversation" inversed-by="participants">
             <join-column nullable="false" name="conversation_id" referenced-column-name="id"/>
         </many-to-one>
 
-        <many-to-one field="user" target-entity="App\Backoffice\User\Domain\Entity\User">
-            <join-column nullable="false" name="user_id" referenced-column-name="id"/>
-        </many-to-one>
+        <field name="userId" type="user_id" column="user_id"/>
+        <indexes>
+            <index name="participants_user_id_idx" columns="user_id"/>
+        </indexes>
     </entity>
 </doctrine-mapping>
