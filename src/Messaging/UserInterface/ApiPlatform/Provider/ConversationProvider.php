@@ -7,9 +7,8 @@ namespace App\Messaging\UserInterface\ApiPlatform\Provider;
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProviderInterface;
 use App\Common\Application\Query\QueryBus;
+use App\Messaging\Application\DTO\ConversationDTO;
 use App\Messaging\Application\UseCase\GetConversation\GetConversationQuery;
-use App\Messaging\Domain\Entity\Conversation;
-use App\Messaging\Domain\ValueObject\ConversationId;
 use App\Messaging\UserInterface\ApiPlatform\Resource\ConversationResource;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
@@ -23,12 +22,22 @@ final class ConversationProvider implements ProviderInterface
     public function provide(Operation $operation, array $uriVariables = [], array $context = []): object|array|null
     {
         try {
-            /** @var Conversation|null $conversation */
-            $conversation = $this->queryBus->ask(new GetConversationQuery(ConversationId::fromString((string) $uriVariables['id'])));
+            $conversationId = (string) $uriVariables['id'];
+            $conversationDTO = $this->getConversationById($conversationId);
         } catch (\InvalidArgumentException $exception) {
             throw new HttpException(400, $exception->getMessage());
         }
 
-        return null !== $conversation ? ConversationResource::fromEntity($conversation) : null;
+        return ConversationResource::fromConversationDTO($conversationDTO);
+    }
+
+    private function getConversationById(string $conversationId): ConversationDTO
+    {
+        return $this->queryBus
+            ->ask(
+                new GetConversationQuery(
+                    conversationId: $conversationId,
+                )
+            );
     }
 }
