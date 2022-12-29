@@ -9,8 +9,8 @@ use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
-use App\Common\UserInterface\ApiPlatform\OpenApi\CursorFilter;
-use App\Messaging\Domain\Entity\Conversation;
+use App\Messaging\Application\DTO\ConversationDTO;
+use App\Messaging\Application\DTO\ParticipantDTO;
 use App\Messaging\UserInterface\ApiPlatform\Processor\CreateConversationProcessor;
 use App\Messaging\UserInterface\ApiPlatform\Provider\ConversationProvider;
 use App\Messaging\UserInterface\ApiPlatform\Provider\ConversationsProvider;
@@ -32,7 +32,6 @@ use Symfony\Component\Validator\Constraints as Assert;
                 ],
             ],
             normalizationContext: ['groups' => 'read'],
-            filters: [CursorFilter::class],
             provider: ConversationsProvider::class,
         ),
         new Get(
@@ -59,18 +58,27 @@ final class ConversationResource
         #[Assert\Count(min: 2, groups: ['create'])]
         #[Groups(['create', 'read'])]
         public ?array $participants = [],
-
-        #[Groups(['read'])]
-        public ?string $createdAt = null,
     ) {
     }
 
-    public static function fromEntity(Conversation $conversation): ConversationResource
+    public static function fromConversationDTO(ConversationDTO $conversationDTO): ConversationResource
     {
+        $participantsResources = self::mapParticipantsDTOsToParticipantsResources($conversationDTO->participants);
+
         return new self(
-            (string) $conversation->id(),
-            $conversation->participants(),
-            $conversation->createdAt()->toISOString(),
+            id: $conversationDTO->id,
+            participants: $participantsResources,
         );
+    }
+
+    /**
+     * @param ParticipantDTO[] $participantsDTOs
+     * @return ParticipantResource[]
+     */
+    private static function mapParticipantsDTOsToParticipantsResources(array $participantsDTOs): array
+    {
+        return array_map(static function (ParticipantDTO $participantDTO) {
+            return ParticipantResource::fromParticipantDTO($participantDTO);
+        }, $participantsDTOs);
     }
 }
