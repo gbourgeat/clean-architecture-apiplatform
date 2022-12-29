@@ -6,7 +6,6 @@ namespace App\Common\Infrastructure\Doctrine\Type;
 
 use App\Common\Domain\ValueObject\FirstName;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
-use Doctrine\DBAL\Types\StringType;
 
 class FirstNameType extends StringType
 {

@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Backoffice\Workspace\Infrastructure\Doctrine\Type;
 
 use App\Backoffice\Workspace\Domain\ValueObject\WorkspaceName;
+use App\Common\Infrastructure\Doctrine\Type\StringType;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
-use Doctrine\DBAL\Types\StringType;
 
 final class WorkspaceNameType extends StringType
 {

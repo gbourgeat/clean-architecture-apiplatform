@@ -25,9 +25,4 @@ class LastNameType extends StringType
     {
         return self::TYPE;
     }
-
-    public function requiresSQLCommentHint(AbstractPlatform $platform): bool
-    {
-        return true;
-    }
 }
