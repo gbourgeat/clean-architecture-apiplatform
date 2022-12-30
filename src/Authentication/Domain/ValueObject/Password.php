@@ -40,27 +40,27 @@ final class Password extends StringValue
         }
     }
 
-    private function hasUppercaseChar($password): bool
+    private function hasUppercaseChar(string $password): bool
     {
         return false !== preg_match('/[A-Z]/', $password);
     }
 
-    private function hasLowercaseChar($password): bool
+    private function hasLowercaseChar(string $password): bool
     {
         return false !== preg_match('/[a-z]/', $password);
     }
 
-    private function hasNumberChar($password): bool
+    private function hasNumberChar(string $password): bool
     {
         return false !== preg_match('/\d/', $password);
     }
 
-    private function hasSpecialChar($password): bool
+    private function hasSpecialChar(string $password): bool
     {
         return false !== preg_match('/\W/', $password);
     }
 
-    private function hasValidLength($password): bool
+    private function hasValidLength(string $password): bool
     {
         return strlen($password) >= self::MIN_LENGTH;
     }

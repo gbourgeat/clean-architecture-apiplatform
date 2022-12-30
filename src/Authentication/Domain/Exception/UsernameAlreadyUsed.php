@@ -11,6 +11,6 @@ final class UsernameAlreadyUsed extends ValidationFailed
 {
     public function __construct(Username $username)
     {
-        parent::__construct(sprintf('Username "%s" already used.', $username));
+        parent::__construct(sprintf('Username "%s" already used.', (string) $username));
     }
 }

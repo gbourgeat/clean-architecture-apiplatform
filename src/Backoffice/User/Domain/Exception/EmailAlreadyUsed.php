@@ -11,6 +11,6 @@ final class EmailAlreadyUsed extends ValidationFailed
 {
     public function __construct(Email $email)
     {
-        parent::__construct(sprintf('Email "%s" is already used', $email));
+        parent::__construct(sprintf('Email "%s" is already used', (string) $email));
     }
 }

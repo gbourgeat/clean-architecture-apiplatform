@@ -10,6 +10,6 @@ final class UserNotFoundWithId extends UserNotFound
 {
     public function __construct(UserId $userId)
     {
-        parent::__construct(sprintf('User not found with id "%s".', $userId));
+        parent::__construct(sprintf('User not found with id "%s".', (string) $userId));
     }
 }

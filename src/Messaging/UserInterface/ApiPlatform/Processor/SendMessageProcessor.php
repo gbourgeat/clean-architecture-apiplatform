@@ -27,6 +27,9 @@ final class SendMessageProcessor implements ProcessorInterface
         /** @var ConversationResource $conversationResource */
         $conversationResource = $context['previous_data'];
 
+        Assert::notNull($conversationResource->id);
+        Assert::notNull($messageResource->content);
+
         $this->commandBus
             ->dispatch(
                 new SendMessageCommand(

@@ -25,6 +25,8 @@ final class CreateConversationProcessor implements ProcessorInterface
         /** @var ConversationResource $conversationResource */
         $conversationResource = $data;
 
+        Assert::notNull($conversationResource->participants);
+
         $conversationDTO = $this->createConversationAndReturnConversationDTO($conversationResource->participants);
 
         return ConversationResource::fromConversationDTO($conversationDTO);
