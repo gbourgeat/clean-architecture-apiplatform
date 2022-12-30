@@ -10,13 +10,25 @@ use App\Common\Domain\ValueObject\EventId;
 
 abstract class DomainEvent
 {
-
-    public function __construct(
+    private function __construct(
         private readonly AggregateRootId $aggregateRootId,
         private readonly EventId $eventId,
-        private readonly array $body,
         private readonly DateTime $occurredOn,
     ) {
+    }
+
+    public static function create(
+        AggregateRootId $aggregateRootId,
+    ): static
+    {
+        $eventId = EventId::generate();
+        $occuredOn = DateTime::now();
+
+        return new static(
+            aggregateRootId: $aggregateRootId,
+            eventId: $eventId,
+            occurredOn: $occuredOn,
+        );
     }
 
     public function aggregateRootId(): AggregateRootId
@@ -34,14 +46,29 @@ abstract class DomainEvent
         return $this->occurredOn;
     }
 
-    abstract public static function fromPrimitives(
-        string $aggregateId,
-        array $body,
+    public static function fromPrimitives(
+        string $aggregateRootId,
         string $eventId,
         string $occurredOn,
-    ): self;
+    ): static {
+        return new static(
+            aggregateRootId: AggregateRootId::fromString($aggregateRootId),
+            eventId: EventId::fromString($eventId),
+            occurredOn: DateTime::fromSerialized($occurredOn),
+        );
+    }
 
     abstract public static function eventName(): string;
 
-    abstract public function toPrimitives(): array;
+    /**
+     * @return array{aggregateRootId: string, eventId: string, occurredOn: string}
+     */
+    public function toPrimitives(): array
+    {
+        return [
+            'aggregateRootId' => (string) $this->aggregateRootId(),
+            'eventId' => (string) $this->eventId(),
+            'occurredOn' => $this->occurredOn()->toAtomString(),
+        ];
+    }
 }
