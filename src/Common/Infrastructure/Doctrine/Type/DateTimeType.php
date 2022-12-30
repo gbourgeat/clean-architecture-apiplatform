@@ -11,6 +11,9 @@ class DateTimeType extends CarbonType
 {
     protected const TYPE = 'datetime';
 
+    /**
+     * @psalm-return DateTime::class
+     */
     protected function getCarbonClassName(): string
     {
         return DateTime::class;
