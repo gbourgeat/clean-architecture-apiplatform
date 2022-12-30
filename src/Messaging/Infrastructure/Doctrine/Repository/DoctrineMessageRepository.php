@@ -8,7 +8,6 @@ use App\Messaging\Domain\Entity\Message;
 use App\Messaging\Domain\Repository\MessageRepository;
 use App\Messaging\Domain\ValueObject\ConversationId;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\Persistence\ManagerRegistry;
 
 class DoctrineMessageRepository extends ServiceEntityRepository implements MessageRepository
@@ -20,15 +19,23 @@ class DoctrineMessageRepository extends ServiceEntityRepository implements Messa
         parent::__construct($registry, Message::class);
     }
 
-    public function withConversationId(ConversationId $conversationId): Collection
+    /**
+     * @return Message[]
+     */
+    public function searchByConversationId(ConversationId $conversationId, int $page, int $itemsPerPage): array
     {
         $queryBuilder = $this->createQueryBuilder(self::ALIAS);
+        $expressionBuilder = $queryBuilder->expr();
+        $offset = ($page - 1) * $itemsPerPage;
 
-        return $queryBuilder
-                ->where($queryBuilder->expr()->eq(self::ALIAS.'.conversation', ':conversationId'))
-                ->setParameter('conversationId', (string) $conversationId)
-                ->orderBy($this->query()->expr()->desc(self::ALIAS.'.sentAt'))
-                ->getQuery()
-                ->getResult();
+        $query = $queryBuilder
+            ->where($expressionBuilder->eq(self::ALIAS.'.conversation', ':conversationId'))
+            ->setParameter('conversationId', $conversationId)
+            ->orderBy($expressionBuilder->desc(self::ALIAS.'.sentAt'))
+            ->setFirstResult($offset)
+            ->setMaxResults($itemsPerPage)
+            ->getQuery();
+
+        return $query->getResult();
     }
 }
