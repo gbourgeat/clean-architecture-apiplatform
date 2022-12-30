@@ -8,6 +8,7 @@ use App\Authentication\Application\DTO\AuthUserDTO;
 use App\Backoffice\User\Application\DTO\UserDTO;
 use App\Backoffice\User\Domain\ValueObject\UserId;
 use App\Common\Domain\Entity\AggregateRoot;
+use App\Common\Domain\ValueObject\DateTime;
 use App\Messaging\Domain\Exception\NotEnoughParticipants;
 use App\Messaging\Domain\Exception\ParticipantNotFoundInConversation;
 use App\Messaging\Domain\Exception\UserIsNotParticipantOfConversation;
@@ -23,7 +24,7 @@ class Conversation extends AggregateRoot
 
     private ConversationId $id;
 
-    private Carbon $createdAt;
+    private DateTime $createdAt;
 
     /** @var Collection<int, Message> */
     private Collection $messages;
@@ -34,7 +35,7 @@ class Conversation extends AggregateRoot
     /**
      * @param UserDTO[] $usersDTOs
      */
-    private function __construct(Carbon $createdAt, array $usersDTOs)
+    private function __construct(DateTime $createdAt, array $usersDTOs)
     {
         $this->ensureHasEnoughParticipants($usersDTOs);
 
@@ -51,9 +52,12 @@ class Conversation extends AggregateRoot
     /**
      * @param UserDTO[] $usersDTOs
      */
-    public static function create(Carbon $createdAt, array $usersDTOs): self
+    public static function create(DateTime $createdAt, array $usersDTOs): self
     {
-        return new self($createdAt, $usersDTOs);
+        return new self(
+            createdAt: $createdAt,
+            usersDTOs: $usersDTOs,
+        );
     }
 
     public function postMessage(Participant $participant, MessageContent $content): void
@@ -90,7 +94,7 @@ class Conversation extends AggregateRoot
         return $this->id;
     }
 
-    public function createdAt(): Carbon
+    public function createdAt(): DateTime
     {
         return $this->createdAt;
     }
