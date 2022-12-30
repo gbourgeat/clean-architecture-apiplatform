@@ -103,7 +103,7 @@ class Conversation extends AggregateRoot
     public function participantFromAuthUser(AuthUserDTO $authUser): Participant
     {
         foreach ($this->participants as $participant) {
-            if ($participant->user()->id()->equals($authUser->userId)) {
+            if ($participant->userId()->equals($authUser->userId)) {
                 return $participant;
             }
         }
