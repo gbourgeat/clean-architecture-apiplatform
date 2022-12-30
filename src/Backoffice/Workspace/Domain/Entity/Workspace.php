@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Backoffice\Workspace\Domain\Entity;
 
-use App\Backoffice\User\Domain\Entity\User;
+use App\Backoffice\User\Application\DTO\UserDTO;
 use App\Backoffice\Workspace\Domain\ValueObject\WorkspaceId;
 use App\Backoffice\Workspace\Domain\ValueObject\WorkspaceName;
 use App\Common\Domain\Entity\AggregateRoot;
@@ -20,7 +20,7 @@ class Workspace extends AggregateRoot
     private function __construct(
         private WorkspaceName $name,
         private Email $contactEmail,
-        private User $owner,
+        private UserDTO $owner,
     ) {
         $this->id = WorkspaceId::generate();
         $this->createdAt = DateTime::now();
@@ -29,7 +29,7 @@ class Workspace extends AggregateRoot
     public static function create(
         WorkspaceName $name,
         Email $contactEmail,
-        User $owner,
+        UserDTO $owner,
     ): Workspace {
         return new self(
             $name,
@@ -48,7 +48,7 @@ class Workspace extends AggregateRoot
         return $this->name;
     }
 
-    public function owner(): User
+    public function owner(): UserDTO
     {
         return $this->owner;
     }
