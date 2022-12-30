@@ -22,6 +22,9 @@ final class ParticipantResource
 
         #[Groups(['read'])]
         public ?string $name = '',
+
+        #[Groups(['read'])]
+        public ?string $userId = '',
     ) {
     }
 
@@ -30,6 +33,7 @@ final class ParticipantResource
         return new self(
             id: $participantDTO->id,
             name: $participantDTO->name,
+            userId: $participantDTO->userId,
         );
     }
 }

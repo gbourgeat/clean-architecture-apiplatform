@@ -22,15 +22,6 @@ use Symfony\Component\Validator\Constraints as Assert;
     operations: [
         new GetCollection(
             openapiContext: ['summary' => 'List conversations.'],
-            paginationItemsPerPage: 5,
-            paginationPartial: true,
-            paginationFetchJoinCollection: false,
-            paginationViaCursor: [
-                [
-                    'field' => 'createdAt',
-                    'direction' => 'DESC',
-                ],
-            ],
             normalizationContext: ['groups' => 'read'],
             provider: ConversationsProvider::class,
         ),

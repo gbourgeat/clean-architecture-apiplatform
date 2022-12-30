@@ -8,7 +8,7 @@ use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
-use App\Messaging\Domain\Entity\Message;
+use App\Messaging\Application\DTO\MessageDTO;
 use App\Messaging\UserInterface\ApiPlatform\Processor\SendMessageProcessor;
 use App\Messaging\UserInterface\ApiPlatform\Provider\ConversationProvider;
 use App\Messaging\UserInterface\ApiPlatform\Provider\MessagesProvider;
@@ -52,17 +52,17 @@ class MessageResource
         public ?string $sentAt = null,
 
         #[Groups(['read'])]
-        public ?string $sender = null,
+        public ?ParticipantResource $sentBy = null,
     ) {
     }
 
-    public static function fromEntity(Message $message): MessageResource
+    public static function fromMessageDTO(MessageDTO $messageDTO): MessageResource
     {
         return new MessageResource(
-            (string) $message->id(),
-            (string) $message->content(),
-            $message->sentAt()->toISOString(),
-            (string) $message->sentBy()->user()->id(),
+            id: $messageDTO->id,
+            content: $messageDTO->content,
+            sentAt: $messageDTO->sentAt,
+            sentBy: ParticipantResource::fromParticipantDTO($messageDTO->sentBy),
         );
     }
 }
