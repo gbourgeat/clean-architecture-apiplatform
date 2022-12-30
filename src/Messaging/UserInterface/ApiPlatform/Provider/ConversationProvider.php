@@ -12,6 +12,9 @@ use App\Messaging\Application\UseCase\GetConversation\GetConversationQuery;
 use App\Messaging\UserInterface\ApiPlatform\Resource\ConversationResource;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
+/**
+ * @template-implements ProviderInterface<ConversationResource>
+ */
 final class ConversationProvider implements ProviderInterface
 {
     public function __construct(

@@ -12,6 +12,9 @@ use App\Backoffice\User\Application\UseCase\SearchUsersPaginated\SearchUsersPagi
 use App\Backoffice\User\UserInterface\ApiPlatform\Resource\UserResource;
 use App\Common\Application\Query\QueryBus;
 
+/**
+ * @template-implements ProviderInterface<UserResource>
+ */
 final class UsersProvider implements ProviderInterface
 {
     public function __construct(

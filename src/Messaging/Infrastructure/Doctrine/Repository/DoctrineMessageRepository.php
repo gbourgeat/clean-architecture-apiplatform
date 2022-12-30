@@ -10,6 +10,9 @@ use App\Messaging\Domain\ValueObject\ConversationId;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
+/**
+ * @template-extends ServiceEntityRepository<Message>
+ */
 class DoctrineMessageRepository extends ServiceEntityRepository implements MessageRepository
 {
     public const ALIAS = 'message';

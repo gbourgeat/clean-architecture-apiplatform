@@ -13,6 +13,9 @@ use App\Backoffice\User\UserInterface\ApiPlatform\Resource\UserResource;
 use App\Common\Application\Query\QueryBus;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
+/**
+ * @template-implements ProviderInterface<UserResource>
+ */
 final class UserProvider implements ProviderInterface
 {
     public function __construct(

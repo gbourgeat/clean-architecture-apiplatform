@@ -9,6 +9,10 @@ use App\Backoffice\Workspace\Domain\Repository\WorkspaceRepository;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
+
+/**
+ * @template-extends ServiceEntityRepository<Workspace>
+ */
 final class DoctrineWorkspaceRepository extends ServiceEntityRepository implements WorkspaceRepository
 {
     private const ALIAS = 'workspace';

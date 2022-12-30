@@ -12,6 +12,9 @@ use App\Messaging\Application\DTO\MessageDTO;
 use App\Messaging\Application\UseCase\GetMessages\GetMessagesQuery;
 use App\Messaging\UserInterface\ApiPlatform\Resource\MessageResource;
 
+/**
+ * @template-implements ProviderInterface<MessageResource>
+ */
 class MessagesProvider implements ProviderInterface
 {
     public function __construct(

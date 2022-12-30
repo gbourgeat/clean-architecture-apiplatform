@@ -11,6 +11,9 @@ use App\Authentication\Domain\ValueObject\Username;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
+/**
+ * @template-extends ServiceEntityRepository<UserCredential>
+ */
 final class DoctrineUserCredentialRepository extends ServiceEntityRepository implements UserCredentialRepository
 {
     private const ALIAS = 'user_credential';

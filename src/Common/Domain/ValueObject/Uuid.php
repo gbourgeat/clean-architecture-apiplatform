@@ -41,7 +41,7 @@ abstract class Uuid
     private function ensureIsValidUuid(string $id): void
     {
         if (!RamseyUuid::isValid($id)) {
-            throw new \InvalidArgumentException(sprintf('The uuid "%s" is not valid.', $id));
+            throw new \InvalidArgumentException(sprintf('The uuid "%s" is not valid.', (string) $id));
         }
     }
 }

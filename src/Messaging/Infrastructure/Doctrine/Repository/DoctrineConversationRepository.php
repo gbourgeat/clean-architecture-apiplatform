@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\Messaging\Infrastructure\Doctrine\Repository;
 
-use App\Common\Domain\Repository\CursorPagination;
-use App\Common\Infrastructure\Doctrine\Paginator\DoctrineCursorPagination;
 use App\Messaging\Domain\Entity\Conversation;
 use App\Messaging\Domain\Exception\ConversationNotFound;
 use App\Messaging\Domain\Repository\ConversationRepository;
@@ -14,6 +12,9 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query\Expr\OrderBy;
 use Doctrine\Persistence\ManagerRegistry;
 
+/**
+ * @template-extends ServiceEntityRepository<Conversation>
+ */
 class DoctrineConversationRepository extends ServiceEntityRepository implements ConversationRepository
 {
     public const ALIAS = 'conversation';
@@ -45,16 +46,6 @@ class DoctrineConversationRepository extends ServiceEntityRepository implements 
         }
 
         return $conversation;
-    }
-
-    /**
-     * @throws \Exception
-     */
-    public function listCursorPagination(int $limit, string $field, string $direction, ?string $cursor): CursorPagination
-    {
-        $queryBuilder = $this->createQueryBuilder(self::ALIAS);
-
-        return new DoctrineCursorPagination($queryBuilder, $limit, $field, $direction, $cursor);
     }
 
     public function search(int $pageNumber, int $itemsPerPage): array

@@ -6,5 +6,4 @@ namespace App\Common\Domain\ValueObject;
 
 final class EventId extends Uuid
 {
-
 }

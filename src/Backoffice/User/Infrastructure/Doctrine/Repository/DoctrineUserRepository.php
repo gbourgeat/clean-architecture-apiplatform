@@ -14,6 +14,10 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query\Expr\OrderBy;
 use Doctrine\Persistence\ManagerRegistry;
 
+
+/**
+ * @template-extends ServiceEntityRepository<User>
+ */
 final class DoctrineUserRepository extends ServiceEntityRepository implements UserRepository
 {
     private const ALIAS = 'user';

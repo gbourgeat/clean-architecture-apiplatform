@@ -12,17 +12,17 @@ abstract class ArrayValue
 {
     private Collection $collection;
 
-    protected function __construct(array $elements)
+    protected function __construct(array $elements, private readonly string $className)
     {
-        $this->ensureHasValidElementClass(static::VALUE_OBJECT_CLASS);
+        $this->ensureHasValidElementClass($className);
         $this->ensureElementsAreValidType($elements);
 
         $this->collection = new ArrayCollection($elements);
     }
 
-    public static function fromArray(array $elements): static
+    public static function fromArray(array $elements, string $className): static
     {
-        return new static($elements);
+        return new static($elements, $className);
     }
 
     public function toArray(): array
@@ -60,6 +60,6 @@ abstract class ArrayValue
 
     private function ensureElementAreValidType(mixed $element): void
     {
-        Assert::isInstanceOf($element, static::VALUE_OBJECT_CLASS);
+        Assert::isInstanceOf($element, $this->className);
     }
 }

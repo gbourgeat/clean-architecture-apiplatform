@@ -12,6 +12,9 @@ use App\Messaging\Application\DTO\ConversationDTO;
 use App\Messaging\Application\UseCase\SearchConversationsPaginated\SearchConversationsPaginatedQuery;
 use App\Messaging\UserInterface\ApiPlatform\Resource\ConversationResource;
 
+/**
+ * @template-implements ProviderInterface<ConversationResource>
+ */
 final class ConversationsProvider implements ProviderInterface
 {
     public function __construct(
