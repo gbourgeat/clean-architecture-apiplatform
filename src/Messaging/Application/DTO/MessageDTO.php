@@ -11,7 +11,8 @@ final class MessageDTO
     private function __construct(
         public readonly string $id,
         public readonly string $content,
-        public readonly ParticipantDTO $author,
+        public readonly ParticipantDTO $sentBy,
+        public readonly string $sentAt,
     ) {
     }
 
@@ -20,7 +21,8 @@ final class MessageDTO
         return new self(
             id: (string) $message->id(),
             content: (string) $message->content(),
-            author: ParticipantDTO::fromEntity($message->sentBy()),
+            sentBy: ParticipantDTO::fromEntity($message->sentBy()),
+            sentAt: $message->sentAt()->toAtomString(),
         );
     }
 }

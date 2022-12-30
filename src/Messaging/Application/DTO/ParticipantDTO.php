@@ -11,6 +11,7 @@ final class ParticipantDTO
     private function __construct(
         public readonly string $id,
         public readonly string $name,
+        public readonly string $userId,
     ) {
     }
 
@@ -20,6 +21,7 @@ final class ParticipantDTO
         return new self(
             id: (string) $participant->id(),
             name: (string) $participant->name(),
+            userId: (string) $participant->userId(),
         );
     }
 }
