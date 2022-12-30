@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Backoffice\User\Domain\Entity;
 
 use App\Backoffice\User\Domain\ValueObject\UserId;
-use App\Backoffice\User\Domain\ValueObject\UserStatus;
 use App\Common\Domain\Entity\AggregateRoot;
 use App\Common\Domain\ValueObject\DateTime;
 use App\Common\Domain\ValueObject\Email;
@@ -69,11 +68,6 @@ class User extends AggregateRoot
         return $this->email;
     }
 
-    public function status(): UserStatus
-    {
-        return $this->status;
-    }
-
     public function createdAt(): DateTime
     {
         return $this->createdAt;
@@ -98,7 +92,6 @@ class User extends AggregateRoot
     {
         $this->ensureIsNotAlreadyEnabled();
 
-        $this->status = UserStatus::ACTIVE;
         $this->enabledAt = DateTime::now();
     }
 
@@ -106,7 +99,6 @@ class User extends AggregateRoot
     {
         $this->ensureIsNotAlreadyRemoved();
 
-        $this->status = UserStatus::REMOVED;
         $this->removedAt = DateTime::now();
     }
 
