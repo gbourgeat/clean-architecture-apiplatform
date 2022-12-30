@@ -15,6 +15,7 @@
         "ext-iconv": "*",
         "ext-zend-opcache": "*",
         "ext-openssl": "*",
+        "ext-apcu": "*",
 
         "api-platform/core": "^3.0",
         "doctrine/annotations": "^1.14",
@@ -104,7 +105,8 @@
     },
     "require-dev": {
         "api-platform/schema-generator": "^5.1",
-
+        "phpunit/phpunit": "^9.5",
+        "roave/security-advisories": "dev-latest",
         "symfony/browser-kit": "6.1.*",
         "symfony/css-selector": "6.1.*",
         "symfony/debug-bundle": "6.1.*",
@@ -114,8 +116,6 @@
         "symfony/stopwatch": "6.1.*",
         "symfony/var-dumper": "6.1.*",
         "symfony/web-profiler-bundle": "6.1.*",
-
-        "phpunit/phpunit": "^9.5",
-        "roave/security-advisories": "dev-latest"
+        "vimeo/psalm": "^5.4"
     }
 }
