@@ -37,14 +37,11 @@ services:
         resource: '%kernel.project_dir%/src/Authentication/'
 
     ######
-    # Backoffice
+    # User
     ################################
 
-    App\Backoffice\User\:
-        resource: '%kernel.project_dir%/src/Backoffice/User/'
-
-    App\Backoffice\Workspace\:
-        resource: '%kernel.project_dir%/src/Backoffice/Workspace/'
+    App\User\:
+        resource: '%kernel.project_dir%/src/User/'
 
     ######
     # Messaging

@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Messaging\Domain\Entity;
 
-use App\Backoffice\User\Application\DTO\UserDTO;
-use App\Backoffice\User\Domain\ValueObject\UserId;
 use App\Messaging\Domain\Exception\ConversationAlreadyArchivedByParticipant;
 use App\Messaging\Domain\ValueObject\ParticipantId;
 use App\Messaging\Domain\ValueObject\ParticipantName;
+use App\User\Application\DTO\UserDTO;
+use App\User\Domain\ValueObject\UserId;
 
 class Participant
 {

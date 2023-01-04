@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Messaging\Application\Service;
 
-use App\Backoffice\User\Application\DTO\UserDTO;
-use App\Backoffice\User\Application\UseCase\GetUserById\GetUserByIdQuery;
 use App\Common\Application\Query\QueryBus;
 use App\Common\Domain\ValueObject\DateTime;
 use App\Messaging\Domain\Entity\Conversation;
 use App\Messaging\Domain\Repository\ConversationRepository;
+use App\User\Application\DTO\UserDTO;
+use App\User\Application\UseCase\GetUserById\GetUserByIdQuery;
 
 final class ConversationCreator
 {

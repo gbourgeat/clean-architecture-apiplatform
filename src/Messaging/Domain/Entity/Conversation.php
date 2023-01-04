@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace App\Messaging\Domain\Entity;
 
 use App\Authentication\Application\DTO\AuthUserDTO;
-use App\Backoffice\User\Application\DTO\UserDTO;
-use App\Backoffice\User\Domain\ValueObject\UserId;
 use App\Common\Domain\Entity\AggregateRoot;
 use App\Common\Domain\ValueObject\DateTime;
 use App\Messaging\Domain\Exception\NotEnoughParticipants;
@@ -14,6 +12,8 @@ use App\Messaging\Domain\Exception\ParticipantNotFoundInConversation;
 use App\Messaging\Domain\Exception\UserIsNotParticipantOfConversation;
 use App\Messaging\Domain\ValueObject\ConversationId;
 use App\Messaging\Domain\ValueObject\MessageContent;
+use App\User\Application\DTO\UserDTO;
+use App\User\Domain\ValueObject\UserId;
 use Carbon\Carbon;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;

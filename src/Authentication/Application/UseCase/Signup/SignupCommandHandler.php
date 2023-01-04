@@ -13,11 +13,11 @@ use App\Authentication\Domain\Repository\UserCredentialRepository;
 use App\Authentication\Domain\Service\PasswordHasher;
 use App\Authentication\Domain\ValueObject\Password;
 use App\Authentication\Domain\ValueObject\Username;
-use App\Backoffice\User\Application\DTO\UserDTO;
-use App\Backoffice\User\Application\UseCase\CreateUser\CreateUserCommand;
-use App\Backoffice\User\Domain\ValueObject\UserId;
 use App\Common\Application\Command\CommandBus;
 use App\Common\Application\Command\CommandHandler;
+use App\User\Application\DTO\UserDTO;
+use App\User\Application\UseCase\CreateUser\CreateUserCommand;
+use App\User\Domain\ValueObject\UserId;
 
 final class SignupCommandHandler implements CommandHandler
 {

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doctrine-mapping xmlns="https://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="https://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="https://doctrine-project.org/schemas/orm/doctrine-mapping
+                          https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+    <entity name="App\User\Domain\Entity\User" table="users">
+        <id name="id" type="user_id" column="id"/>
+
+        <field name="firstName" column="first_name" type="firstname" nullable="false" unique="false"/>
+        <field name="lastName" column="last_name" type="lastname" nullable="false" unique="false"/>
+
+        <field name="email" column="email" type="email" nullable="false" unique="true"/>
+        <indexes>
+            <index name="users_email_idx" columns="email"/>
+        </indexes>
+
+        <field name="createdAt" column="created_at" type="datetime" nullable="false" unique="false"/>
+        <indexes>
+            <index name="users_created_at_idx" columns="created_at"/>
+        </indexes>
+
+        <field name="removedAt" column="removed_at" type="datetime" nullable="true" unique="false"/>
+    </entity>
+</doctrine-mapping>

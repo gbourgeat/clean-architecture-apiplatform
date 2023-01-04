@@ -7,7 +7,7 @@ namespace App\Authentication\Domain\Entity;
 use App\Authentication\Domain\Exception\NewPasswordShouldBeDifferentOfCurrentPassword;
 use App\Authentication\Domain\ValueObject\HashedPassword;
 use App\Authentication\Domain\ValueObject\Username;
-use App\Backoffice\User\Domain\ValueObject\UserId;
+use App\User\Domain\ValueObject\UserId;
 
 class UserCredential
 {

@@ -19,13 +19,9 @@ doctrine:
             username: App\Authentication\Infrastructure\Doctrine\Type\UsernameType
             hashed_password: App\Authentication\Infrastructure\Doctrine\Type\HashedPasswordType
 
-            # Backoffice/User
-            user_id: App\Backoffice\User\Infrastructure\Doctrine\Type\UserIdType
-            user_status: App\Backoffice\User\Infrastructure\Doctrine\Type\UserStatusType
-
-            # Backoffice/Workspace
-            workspace_id: App\Backoffice\Workspace\Infrastructure\Doctrine\Type\WorkspaceIdType
-            workspace_name: App\Backoffice\Workspace\Infrastructure\Doctrine\Type\WorkspaceNameType
+            # User
+            user_id: App\User\Infrastructure\Doctrine\Type\UserIdType
+            user_status: App\User\Infrastructure\Doctrine\Type\UserStatusType
 
             # Messaging
             conversation_id: App\Messaging\Infrastructure\Doctrine\Type\ConversationIdType
@@ -45,17 +41,11 @@ doctrine:
                 dir: '%kernel.project_dir%/src/Authentication/Infrastructure/Doctrine/Mapping'
                 prefix: 'App\Authentication\Domain\Entity'
 
-            Backoffice\User:
+            User:
                 is_bundle: false
                 type: xml
-                dir: '%kernel.project_dir%/src/Backoffice/User/Infrastructure/Doctrine/Mapping'
-                prefix: 'App\Backoffice\User\Domain\Entity'
-
-            Backoffice\Workspace:
-                is_bundle: false
-                type: xml
-                dir: '%kernel.project_dir%/src/Backoffice/Workspace/Infrastructure/Doctrine/Mapping'
-                prefix: 'App\Backoffice\Workspace\Domain\Entity'
+                dir: '%kernel.project_dir%/src/User/Infrastructure/Doctrine/Mapping'
+                prefix: 'App\User\Domain\Entity'
 
             Messaging:
                 is_bundle: false

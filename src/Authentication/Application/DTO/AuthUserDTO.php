@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Authentication\Application\DTO;
 
-use App\Backoffice\User\Application\DTO\UserDTO;
+use App\User\Application\DTO\UserDTO;
 
 final class AuthUserDTO
 {

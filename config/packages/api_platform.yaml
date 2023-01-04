@@ -6,8 +6,7 @@ api_platform:
         paths:
             - '%kernel.project_dir%/src/Authentication/UserInterface/ApiPlatform/Resource/'
             - '%kernel.project_dir%/src/Authentication/UserInterface/ApiPlatform/Payload/'
-            - '%kernel.project_dir%/src/Backoffice/User/UserInterface/ApiPlatform/Resource/'
-#            - '%kernel.project_dir%/src/Backoffice/Workspace/UserInterface/ApiPlatform/Resource/'
+            - '%kernel.project_dir%/src/User/UserInterface/ApiPlatform/Resource/'
             - '%kernel.project_dir%/src/Messaging/UserInterface/ApiPlatform/Resource/'
     patch_formats:
         json:

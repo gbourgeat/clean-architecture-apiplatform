@@ -11,10 +11,10 @@ use App\Authentication\Domain\Repository\UserCredentialRepository;
 use App\Authentication\Domain\Service\PasswordHasher;
 use App\Authentication\Domain\ValueObject\Password;
 use App\Authentication\Domain\ValueObject\Username;
-use App\Backoffice\User\Application\DTO\UserDTO;
-use App\Backoffice\User\Application\UseCase\GetUserById\GetUserByIdQuery;
 use App\Common\Application\Command\CommandHandler;
 use App\Common\Application\Query\QueryBus;
+use App\User\Application\DTO\UserDTO;
+use App\User\Application\UseCase\GetUserById\GetUserByIdQuery;
 
 final class LoginCommandHandler implements CommandHandler
 {
