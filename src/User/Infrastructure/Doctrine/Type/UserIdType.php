@@ -12,7 +12,7 @@ class UserIdType extends UuidType
 {
     public const TYPE = 'user_id';
 
-    public function convertToPHPValue($value, AbstractPlatform $platform)
+    public function convertToPHPValue($value, AbstractPlatform $platform): UserId
     {
         return UserId::fromString((string) $value);
     }

@@ -12,7 +12,7 @@ class ParticipantNameType extends StringType
 {
     public const TYPE = 'participant_name';
 
-    public function convertToPHPValue($value, AbstractPlatform $platform)
+    public function convertToPHPValue($value, AbstractPlatform $platform): ParticipantName
     {
         return ParticipantName::fromString((string) $value);
     }

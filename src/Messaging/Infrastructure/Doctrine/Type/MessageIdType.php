@@ -12,7 +12,7 @@ class MessageIdType extends UuidType
 {
     public const TYPE = 'message_id';
 
-    public function convertToPHPValue($value, AbstractPlatform $platform)
+    public function convertToPHPValue($value, AbstractPlatform $platform): MessageId
     {
         return MessageId::fromString((string) $value);
     }

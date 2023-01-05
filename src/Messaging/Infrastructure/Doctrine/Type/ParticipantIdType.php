@@ -12,7 +12,7 @@ class ParticipantIdType extends UuidType
 {
     public const TYPE = 'participant_id';
 
-    public function convertToPHPValue($value, AbstractPlatform $platform)
+    public function convertToPHPValue($value, AbstractPlatform $platform): ParticipantId
     {
         return ParticipantId::fromString((string) $value);
     }

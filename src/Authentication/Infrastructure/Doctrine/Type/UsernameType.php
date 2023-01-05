@@ -12,7 +12,7 @@ final class UsernameType extends StringType
 {
     public const TYPE = 'username';
 
-    public function convertToPHPValue($value, AbstractPlatform $platform)
+    public function convertToPHPValue($value, AbstractPlatform $platform): Username
     {
         return Username::fromString((string) $value);
     }

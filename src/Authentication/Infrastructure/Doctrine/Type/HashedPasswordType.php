@@ -12,7 +12,7 @@ final class HashedPasswordType extends StringType
 {
     public const TYPE = 'hashed_password';
 
-    public function convertToPHPValue($value, AbstractPlatform $platform)
+    public function convertToPHPValue($value, AbstractPlatform $platform): HashedPassword
     {
         return HashedPassword::fromString((string) $value);
     }

@@ -12,7 +12,7 @@ class ConversationIdType extends UuidType
 {
     public const TYPE = 'conversation_id';
 
-    public function convertToPHPValue($value, AbstractPlatform $platform)
+    public function convertToPHPValue($value, AbstractPlatform $platform): ConversationId
     {
         return ConversationId::fromString((string) $value);
     }

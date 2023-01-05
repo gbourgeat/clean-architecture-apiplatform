@@ -40,7 +40,7 @@ class UserStatusType extends StringType
         return true;
     }
 
-    public function getName()
+    public function getName(): string
     {
         return self::TYPE;
     }
