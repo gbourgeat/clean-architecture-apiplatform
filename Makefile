@@ -41,3 +41,11 @@ db-update:
 db-reset: db-create db-update
 
 .PHONY: db-create db-update db-reset
+
+tests:
+	@$(EXEC) bin/console doctrine:database:drop --force --env=test || true
+	@$(EXEC) bin/console doctrine:database:create --env=test
+	@$(EXEC) bin/console doctrine:schema:create --env=test
+	@$(EXEC) bin/phpunit $@
+
+.PHONY: tests
